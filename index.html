@@ -1,61 +1,62 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>正負數四則運算｜手機友善（含計時與錯題複習）</title>
-<meta name="description" content="正負數加減乘除練習；含計時模式、音效、計分、進度條、錯題複習與盲點診斷；僅用 ( ) 與 [ ] 括號；手機友善。">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>正負數四則運算｜手機友善練習</title>
+<meta name="description" content="正負數加減、乘除、混合、先乘除後加減；僅使用 () 與 [] 括號；含音效、計分、進度、計時模式、錯題複習與盲點診斷。">
 <style>
-  :root{
-    --bg:#fff8fb; --card:#ffffff; --ink:#333; --muted:#6b7280;
-    --p:#ff8bb6; --p2:#ffd6e7; --good:#2e7d32; --bad:#c62828;
-    --shadow:0 10px 24px rgba(255,139,182,.15); --r:18px;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:ui-rounded,"Segoe UI",-apple-system,"PingFang TC","Noto Sans TC",sans-serif;background:linear-gradient(#fff,var(--bg));color:var(--ink)}
-  header{position:sticky;top:0;z-index:10;background:linear-gradient(#fff,var(--bg));box-shadow:0 4px 16px rgba(0,0,0,.04)}
-  .wrap{max-width:980px;margin:0 auto;padding:14px}
-  .brand{display:flex;gap:10px;align-items:center;padding:8px 10px}
-  .logo{width:42px;height:42px;border-radius:14px;background:var(--p2);display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow)}
-  .brand h1{margin:0;font-size:18px}
-  .brand p{margin:0;color:var(--muted);font-size:13px}
+:root{
+  --bg:#fff8fb; --card:#fff; --ink:#333; --muted:#6b7280;
+  --pri:#ff8bb6; --pri2:#ffd6e7; --good:#2e7d32; --bad:#c62828;
+  --shadow:0 10px 24px rgba(255,139,182,.15); --r:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:ui-rounded,system-ui,-apple-system,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);background:linear-gradient(#fff,var(--bg))}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(#fff,var(--bg));box-shadow:0 4px 16px rgba(0,0,0,.05);padding:10px 12px 6px}
+.wrap{max-width:980px;margin:0 auto;padding:14px}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:42px;height:42px;border-radius:12px;background:var(--pri2);display:grid;place-items:center;box-shadow:var(--shadow);font-size:22px}
+.brand h1{margin:0;font-size:18px}
+.brand p{margin:0;color:var(--muted);font-size:13px}
+.principles{margin-top:10px;padding:12px;border-left:6px solid var(--pri);background:#fff;border-radius:14px;box-shadow:var(--shadow)}
+.principles h2{margin:0 0 8px;font-size:16px}
+.principles ol{margin:0;padding-left:20px}
+.pill{display:inline-block;margin:6px 8px 0 0;padding:4px 10px;border-radius:999px;background:#ffe5ef;font-size:12px}
+.bar{width:100%;height:10px;background:#f0f0f0;border-radius:999px;overflow:hidden;margin-top:10px}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,var(--pri),#ffa1c5);transition:width .35s;border-radius:999px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;color:#444;font-size:13px}
+.chip{background:#fff;padding:6px 10px;border-radius:999px;box-shadow:var(--shadow)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#fff;box-shadow:var(--shadow)}
+.timer{font-weight:700;color:#c62828}
 
-  .pill{display:inline-block;margin:4px 6px 0 0;padding:4px 10px;border-radius:999px;background:#ffe5ef;font-size:12px}
-  .bar{width:100%;height:10px;background:#f0f0f0;border-radius:999px;overflow:hidden;margin-top:10px}
-  .fill{height:100%;width:0;background:linear-gradient(90deg,var(--p),#ffa1c5);transition:width .35s;border-radius:999px}
-  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;color:#444;font-size:13px}
-  .chip{background:#fff;padding:6px 10px;border-radius:999px;box-shadow:var(--shadow)}
-  .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#fff;box-shadow:var(--shadow)}
+.grid{display:grid;gap:14px;grid-template-columns:1fr;margin-top:14px}
+@media(min-width:900px){.grid{grid-template-columns:280px 1fr}}
 
-  .grid{display:grid;gap:14px;grid-template-columns:1fr;margin-top:14px}
-  @media(min-width:900px){.grid{grid-template-columns:280px 1fr}}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
+.section-title{margin:0 0 8px;font-size:16px;font-weight:700}
 
-  .card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
-  .section-title{margin:0 0 8px;font-weight:700;font-size:16px}
+.modes{display:flex;flex-wrap:wrap;gap:8px}
+.mode-btn{border:none;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
+.mode-btn.active{background:var(--pri);color:#fff}
 
-  .mode-btn{border:none;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer;margin:4px 6px 0 0}
-  .mode-btn.active{background:var(--p);color:#fff}
-
-  .problem{font-size:26px;font-weight:800;letter-spacing:.4px;padding:12px 14px;border-radius:14px;background:linear-gradient(180deg,#fff,#fff2f6);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;min-height:72px;word-break:break-word}
-  .answer-input{width:100%;font-size:20px;padding:12px 14px;border-radius:12px;border:2px solid #eee;outline:none}
-  .answer-input:focus{border-color:var(--p)}
-
-  .keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-  .key{padding:12px 10px;border:none;border-radius:12px;background:#fff;box-shadow:var(--shadow);font-size:18px;cursor:pointer}
-  .key.primary{background:var(--p);color:#fff}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .btn{border:none;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
-  .btn.primary{background:var(--p);color:#fff}
-
-  .feedback{border-left:6px solid var(--p);background:#fff;padding:10px 12px;border-radius:12px;box-shadow:var(--shadow);line-height:1.6;font-size:15px;margin-top:8px}
-  .muted{color:var(--muted);font-size:12px}
-  .step{padding:6px 10px;background:#fafafa;border-radius:10px;margin:6px 0;border:1px dashed #eee}
-  .kbd{font-family:ui-monospace,Consolas,Menlo,monospace;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:6px;padding:0 6px}
-  .shake{animation:shake .3s linear}
-  @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
-
-  .hint{color:#5c6bc0}
-  .footer{text-align:center;color:var(--muted);padding:16px 0 40px;font-size:12px}
+.problem{font-size:26px;font-weight:800;letter-spacing:.5px;padding:12px 14px;border-radius:14px;background:linear-gradient(180deg,#fff,#fff2f6);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;min-height:72px;word-break:break-word}
+.answer-area{display:grid;grid-template-columns:1fr;gap:10px}
+.answer-input{width:100%;font-size:20px;padding:12px 14px;border-radius:12px;border:2px solid #eee;outline:none}
+.answer-input:focus{border-color:var(--pri)}
+.keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.key{padding:12px 10px;border:none;border-radius:12px;background:#fff;box-shadow:var(--shadow);font-size:18px;cursor:pointer}
+.key.primary{background:var(--pri);color:#fff}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:none;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
+.btn.primary{background:var(--pri);color:#fff}
+.feedback{border-left:6px solid var(--pri);background:#fff;padding:10px 12px;border-radius:12px;box-shadow:var(--shadow);line-height:1.6;font-size:15px}
+.step{padding:6px 10px;background:#fafafa;border-radius:10px;margin:6px 0;border:1px dashed #eee}
+.kbd{font-family:ui-monospace,Consolas,Menlo,monospace;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:6px;padding:0 6px}
+.muted{color:var(--muted);font-size:12px}
+.shake{animation:shake .3s linear}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
+.footer{text-align:center;color:var(--muted);padding:16px 0 40px;font-size:12px}
 </style>
 </head>
 <body>
@@ -64,17 +65,21 @@
     <div class="brand">
       <div class="logo">🌸</div>
       <div>
-        <h1>正負數四則運算（手機友善）</h1>
-        <p>模式：①正負加減 ②正負乘除 ③四則混合 ④先乘除後加減｜括號僅用 ( ) 與 [ ]</p>
+        <h1>正負數四則運算（手機友善版）</h1>
+        <p>主題自選・計分與音效・計時模式・錯題複習・僅使用 () 與 [] 括號</p>
       </div>
     </div>
 
-    <!-- 規則提示（醒目） -->
-    <div class="card" style="padding:10px 12px">
-      <div class="section-title">四則運算原則</div>
-      <div class="muted">先括號 → 再乘除 → 再加減（同層由左到右）</div>
-      <div class="pill">括號順序：先 <span class="kbd">( )</span> → 再 <span class="kbd">[ ]</span></div>
-      <div class="pill">小技巧：負數寫成 <span class="kbd">(-3)</span> 比較不會看錯號</div>
+    <!-- 原則提示 -->
+    <div class="principles">
+      <h2>四則運算原則（請牢記）</h2>
+      <ol>
+        <li><b>先算括號</b>：先 <span class="kbd">()</span> 再 <span class="kbd">[]</span>，由內向外。</li>
+        <li>括號處理完後，<b>先乘除</b>（左 → 右）。</li>
+        <li>最後做 <b>加減</b>（左 → 右）。</li>
+      </ol>
+      <span class="pill">把負數寫成 <span class="kbd">(-3)</span> 比較不會看錯號</span>
+      <span class="pill">每化簡一步，寫一行，避免同時做很多事</span>
     </div>
 
     <div class="bar" aria-label="progress"><div id="progressFill" class="fill"></div></div>
@@ -85,101 +90,86 @@
       <span class="chip">分數：<b id="score">0</b></span>
       <span class="chip">連對：<b id="streak">0</b> 🔥</span>
       <span class="badge">模式：<b id="modeLabel">—</b></span>
-      <span class="badge">⏱ 計時：<b id="timerText">未開始</b></span>
+      <span class="badge">⏱ 計時：<b class="timer" id="timerText">未開始</b></span>
     </div>
   </div>
 </header>
 
 <main class="wrap grid">
-  <!-- 左：模式與設定 -->
+  <!-- 左：主題與控制 -->
   <section class="card">
-    <div class="section-title">選擇練習主題</div>
-    <div id="modes"></div>
-    <div class="pill">配分：答對 +10、答錯 −5</div>
-    <div class="pill">進度條會依已作題數增加</div>
-    <hr style="border:none;height:1px;background:#f2f2f2;margin:12px 0">
-    <div class="section-title">計時挑戰</div>
-    <div class="controls">
-      <button class="btn" id="btnTimer60">開始 60s</button>
-      <button class="btn" id="btnTimer120">開始 120s</button>
-      <button class="btn" id="btnStopTimer">停止</button>
-    </div>
-    <hr style="border:none;height:1px;background:#f2f2f2;margin:12px 0">
-    <div class="controls">
-      <button class="btn" id="btnReview">開始錯題複習</button>
-      <button class="btn" id="btnReset">重置統計</button>
-    </div>
-  </section>
-
-  <!-- 右：作答區 -->
-  <section class="card">
-    <div class="problem" id="problem">請先選擇左側的練習主題 👈</div>
-    <input id="answer" class="answer-input" inputmode="numeric" placeholder="在這裡輸入答案（可用下方鍵盤）" />
-    <div class="keypad" id="keypad"></div>
-    <div class="controls">
+    <h2 class="section-title">練習主題</h2>
+    <div id="modes" class="modes"></div>
+    <hr style="border:none;height:1px;background:#f2f2f2;margin:14px 0;">
+    <h2 class="section-title">控制與設定</h2>
+    <div class="controls" style="margin-bottom:8px">
       <button class="btn" id="btnPrev" disabled>上一題</button>
       <button class="btn" id="btnNext" disabled>下一題</button>
       <button class="btn primary" id="btnSubmit">送出</button>
-      <button class="btn" id="btnSkip">略過</button>
     </div>
-    <div id="feedback" class="feedback" style="display:none"></div>
+    <div class="controls">
+      <button class="btn" id="btnTimer60">開始計時挑戰（60秒）</button>
+      <button class="btn" id="btnTimer120">開始計時挑戰（120秒）</button>
+      <button class="btn" id="btnStopTimer">停止計時</button>
+    </div>
+    <div class="controls" style="margin-top:8px">
+      <button class="btn" id="btnReview">開始錯題複習</button>
+      <button class="btn" id="btnReset">重置統計</button>
+    </div>
+    <p class="muted" style="margin-top:6px">配分：答對 +10、答錯 −5；計時模式時間到會自動結算。</p>
+  </section>
+
+  <!-- 右：作答 -->
+  <section class="card">
+    <div class="problem" id="problem">請在左側選擇主題後按「下一題」開始</div>
+    <div class="answer-area">
+      <input id="answer" class="answer-input" inputmode="numeric" placeholder="輸入答案後按「送出」或 Enter"/>
+      <div class="keypad" id="keypad"></div>
+      <div id="feedback" class="feedback" style="display:none"></div>
+    </div>
   </section>
 </main>
 
-<div class="footer">© 2025 正負數小宇宙 · 溫馨可愛、充滿希望 💗</div>
+<div class="footer">© 2025 正負數小宇宙 · 溫馨陪伴每一步 💗</div>
 
 <script>
-/* ===== 可調參數 ===== */
+/* ==== 可調參數 ==== */
 const SCORE_CORRECT = 10;
 const SCORE_WRONG = 5;
 const PROGRESS_TARGET = 20;
 
-/* ===== 狀態 ===== */
+/* ==== 狀態 ==== */
 const state = {
   mode:null,
-  history:[],   // {displayExpr, evalExpr, answer, user, correct, explain, structure}
+  history:[], // {displayExpr, rawExpr, answer, steps, user, correct, structure}
   pointer:-1,
-  score:0,
-  streak:0,
+  score:0, streak:0,
+  timerMode:false, timeLeft:0, timer:null,
   reviewQueue:[],
-  timer:null,
-  timeLeft:0,
-  timerMode:false
 };
 
-/* ===== DOM ===== */
+/* ==== DOM ==== */
 const $ = s=>document.querySelector(s);
-const elProblem = $('#problem'), elAnswer = $('#answer'), elFeedback = $('#feedback'), elKeypad = $('#keypad');
-const elQCount = $('#qCount'), elQCorrect = $('#qCorrect'), elQRate = $('#qRate'), elScore = $('#score'), elStreak = $('#streak');
-const elModeLabel = $('#modeLabel'), elProgressFill = $('#progressFill'), elTimerText = $('#timerText');
-const elBtnPrev = $('#btnPrev'), elBtnNext = $('#btnNext'), elBtnSubmit = $('#btnSubmit'), elBtnSkip = $('#btnSkip');
-const elBtnReview = $('#btnReview'), elBtnReset = $('#btnReset');
+const elProblem = $('#problem'), elAnswer = $('#answer'), elFeedback = $('#feedback');
+const elQCount = $('#qCount'), elQCorrect = $('#qCorrect'), elQRate = $('#qRate');
+const elScore = $('#score'), elStreak = $('#streak'), elProgressFill = $('#progressFill');
+const elTimerText = $('#timerText'), elModeLabel = $('#modeLabel');
+const elBtnPrev = $('#btnPrev'), elBtnNext = $('#btnNext'), elBtnSubmit = $('#btnSubmit');
+const elBtnTimer60 = $('#btnTimer60'), elBtnTimer120 = $('#btnTimer120'), elBtnStopTimer = $('#btnStopTimer');
+const elBtnReview = $('#btnReview'), elBtnReset = $('#btnReset'), elModes = $('#modes'), elKeypad = $('#keypad');
 
-/* ===== 模式 ===== */
-const Modes = [
-  { id:'addsub', label:'① 正負數加減 ➕➖' },
-  { id:'muldiv', label:'② 正負數乘除 ✖️➗' },
-  { id:'mixed',  label:'③ 正負數加減乘除 🔀' },
-  { id:'preced', label:'④ 先乘除，後加減 ⚖️' },
-];
-
-/* ===== 工具 ===== */
+/* ==== 工具 ==== */
 function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-function showNum(n){ return `(${n})`; } // 顯示用：統一加括號，降低看錯號
-function opEval(op){ return op.replace('×','*').replace('÷','/'); }
+function fmtNum(n){ return n<0 ? `(${n})` : `${n}`; } // 顯示時負數加小括號
 function playTone(ok=true){
   const ctx = new (window.AudioContext||window.webkitAudioContext)();
-  const o=ctx.createOscillator(), g=ctx.createGain();
-  o.type = ok ? 'sine' : 'square';
-  o.frequency.value = ok ? 880 : 220;
-  o.connect(g); g.connect(ctx.destination);
-  g.gain.setValueAtTime(0.001, ctx.currentTime);
+  const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.type = ok ? 'sine' : 'square'; o.frequency.value = ok ? 880 : 220;
+  o.connect(g); g.connect(ctx.destination); g.gain.setValueAtTime(0.001, ctx.currentTime);
   g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.01);
-  o.start();
-  const d = ok?0.12:0.18;
-  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+d);
-  o.stop(ctx.currentTime+d+0.01);
+  o.start(); const dur = ok ? 0.12 : 0.18; g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+  o.stop(ctx.currentTime+dur+0.01);
 }
 function updateStats(){
   const total = state.history.length;
@@ -188,22 +178,348 @@ function updateStats(){
   elQCount.textContent = total; elQCorrect.textContent = correct; elQRate.textContent = rate+'%';
   elScore.textContent = state.score; elStreak.textContent = state.streak;
   elProgressFill.style.width = Math.min(100, Math.round((total/PROGRESS_TARGET)*100))+'%';
-  elModeLabel.textContent = state.mode ? (Modes.find(m=>m.id===state.mode)?.label || '—') : '—';
+  localStorage.setItem('int_arith_clean_v1', JSON.stringify(state,(k,v)=>k==='history'?v.slice(-200):v));
+}
+(function load(){ try{const s=JSON.parse(localStorage.getItem('int_arith_clean_v1')||'null'); if(s){Object.assign(state,s); updateStats(); if(state.mode){elModeLabel.textContent=Modes.find(m=>m.id===state.mode)?.label||'—'; elBtnNext.disabled=false;}} }catch(e){} })();
+
+/* ==== 模式 ==== */
+const Modes = [
+  { id:'addsub', label:'① 正負數加減 ➕➖' },
+  { id:'muldiv', label:'② 正負數乘除 ✖️➗' },
+  { id:'mixed',  label:'③ 正負數加減乘除 🔀' },
+  { id:'preced', label:'④ 先乘除，後加減 ⚖️' },
+];
+(function buildModeButtons(){
+  Modes.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='mode-btn'; b.textContent=m.label;
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); state.mode=m.id; state.streak=0; elModeLabel.textContent=m.label;
+      setFeedback('已切換主題，按「下一題」開始。', true, true); elBtnNext.disabled=false;
+    });
+    elModes.appendChild(b);
+  });
+})();
+
+/* ==== 表達式求值（規則：先 () -> []，再 乘除，後 加減；左到右） ==== */
+function evalByRules(exprInput){
+  let expr = exprInput.replace(/\s+/g,'');
+  const steps = [];
+  const pushStep = (title, e=expr)=>steps.push({title, expr:e});
+
+  function evalFlat(s){
+    // tokenize
+    const tokens=[]; let i=0;
+    while(i<s.length){
+      const ch=s[i];
+      if(/[0-9]/.test(ch) || (ch==='-' && (i===0 || /[+\-×÷*/]/.test(s[i-1])))){
+        let j=i+1; while(j<s.length && /[0-9]/.test(s[j])) j++;
+        tokens.push(parseInt(s.slice(i,j),10)); i=j;
+      }else if('×÷*/+-'.includes(ch)){ tokens.push(ch); i++; }
+      else { i++; }
+    }
+    // 乘除
+    for(let k=1;k<tokens.length-1;){
+      const op=tokens[k];
+      if(op==='×'||op==='*'||op==='÷'||op==='/'){
+        const a=Number(tokens[k-1]), b=Number(tokens[k+1]);
+        if((op==='÷'||op==='/') && b===0) return {value:NaN, steps};
+        const v = (op==='×'||op==='*')? a*b : a/b;
+        tokens.splice(k-1,3,v);
+        pushStep('先做乘除（左→右）', tokens.join(' '));
+        k=Math.max(1,k-2);
+      }else k+=2;
+    }
+    // 加減
+    for(let k=1;k<tokens.length-1;){
+      const op=tokens[k];
+      if(op==='+'||op==='-'){
+        const a=Number(tokens[k-1]), b=Number(tokens[k+1]);
+        const v = (op==='+')? a+b : a-b;
+        tokens.splice(k-1,3,v);
+        pushStep('再做加減（左→右）', tokens.join(' '));
+        k=Math.max(1,k-2);
+      }else k+=2;
+    }
+    return {value:Number(tokens[0]||0), steps};
+  }
+
+  function reduceBracketType(open, close, label){
+    while(true){
+      let stack=[], found=false, L=-1, R=-1;
+      for(let i=0;i<expr.length;i++){
+        if(expr[i]===open){ stack.push(i); }
+        else if(expr[i]===close){
+          if(stack.length){
+            L = stack.pop();
+            if(stack.length===0){ R=i; found=true; break; }
+          }
+        }
+      }
+      if(!found) break;
+      const inner = expr.slice(L+1,R);
+      const got = evalFlat(inner);
+      expr = expr.slice(0,L) + got.value + expr.slice(R+1);
+      pushStep(`先算${label} ${open}…${close}`, expr);
+    }
+  }
+
+  // 先 () 再 []
+  reduceBracketType('(',')','小括號');
+  reduceBracketType('[',']','中括號');
+
+  // 平面
+  const fin = evalFlat(expr);
+  pushStep('完成', String(fin.value));
+  return {value:fin.value, steps};
 }
 
-/* ===== 規則：只支援 ( ) 與 [ ]，再做 * /，再 + -（左→右） ===== */
-function evalWithBrackets(exprDisplay){
-  // 將顯示式轉為可 eval 的字串：[] 視為 ()
-  let s = exprDisplay.replace(/\s+/g,'').replace(/×/g,'*').replace(/÷/g,'/');
-  s = s.replace(/\[/g,'(').replace(/\]/g,')');
-  // 安全求值：僅允許數字與 + - * / () 負號
-  if(/[^0-9+\-*/().]/.test(s)) return NaN;
-  try{ return Function(`"use strict";return (${s});`)(); } catch(e){ return NaN; }
+/* ==== 題目生成（僅 () 與 []） ==== */
+function makeRecord(displayExpr, rawExpr, structure){
+  const {value, steps} = evalByRules(rawExpr);
+  if(!Number.isFinite(value) || !Number.isInteger(value)){
+    // 重新生同結構
+    const regen = similarQuestion(structure);
+    return {displayExpr:regen.displayExpr, rawExpr:regen.rawExpr, answer:regen.answer, steps:regen.steps, user:null, correct:null, structure};
+  }
+  return {displayExpr, rawExpr, answer:value, steps, user:null, correct:null, structure};
 }
 
-/* ===== 題目產生（僅用 ()、[]） ===== */
-function makeRecord(displayExpr, evalExpr, answer, structure){
-  return {displayExpr, evalExpr, answer, user:null, correct:null, explain:null, structure};
+function wrapParen(type, inner){
+  return type==='()' ? `(${inner})` : `[${inner}]`;
+}
+function genAddSub(){
+  const a = randInt(-20,20), b = randInt(-20,20);
+  const op = choice(['+','-']);
+  const show = `${fmtNum(a)} ${op} ${fmtNum(b)}`;
+  // 偶爾加一層括號
+  const type = Math.random()<0.4 ? choice(['()','[]']) : null;
+  const rawExpr = type ? wrapParen(type, `${a}${op}${b}`) : `${a}${op}${b}`;
+  return makeRecord(type? `${type==='()'?'(': '['}${fmtNum(a)} ${op} ${fmtNum(b)}${type==='()'?')':']'}` : show, rawExpr, {kind:'binAS',op});
+}
+function genMulDiv(){
+  let b = choice([-12,-9,-8,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,8,9,12]);
+  const op = choice(['×','÷']);
+  let a;
+  if(op==='×'){ a = randInt(-12,12); }
+  else{ a = (randInt(-8,8)||1)*b; }
+  const type = Math.random()<0.4 ? choice(['()','[]']) : null;
+  const rawExpr = type ? wrapParen(type, `${a}${op}${b}`) : `${a}${op}${b}`;
+  const display = type? `${type==='()'?'(':'['}${fmtNum(a)} ${op} ${fmtNum(b)}${type==='()'?')':']'}` : `${fmtNum(a)} ${op} ${fmtNum(b)}`;
+  return makeRecord(display, rawExpr, {kind:'binMD',op});
+}
+function genMixed(){
+  // 兩步運算，含括號群組： (a ± b) ×/÷ c   或   a ×/÷ (b ± c)   或   (a ± b) ± c
+  const pattern = choice(['A','B','C']);
+  if(pattern==='A'){
+    const a=randInt(-10,10), b=randInt(-10,10), c=randInt(-10,10)||1;
+    const op1=choice(['+','-']), op2=choice(['×','÷']);
+    const pType = choice(['()','[]']);
+    const leftRaw = wrapParen(pType, `${a}${op1}${b}`);
+    const rawExpr = `${leftRaw}${op2}${c}`;
+    const display = `${pType==='()'?'(':'['}${fmtNum(a)} ${op1} ${fmtNum(b)}${pType==='()'?')':']'} ${op2} ${fmtNum(c)}`;
+    return makeRecord(display, rawExpr, {kind:'tri','shape':'(a±b)op c',op1,op2});
+  }else if(pattern==='B'){
+    const a=randInt(-10,10), b=randInt(-10,10), c=randInt(-10,10)||1;
+    const op1=choice(['×','÷']), op2=choice(['+','-']);
+    const pType = choice(['()','[]']);
+    const rightRaw = wrapParen(pType, `${b}${op2}${c}`);
+    const baseA = (op1==='÷') ? (randInt(-8,8)||1)*(b+c) : a; // 粗略整數化
+    const rawExpr = `${baseA}${op1}${rightRaw}`;
+    const display = `${fmtNum(baseA)} ${op1} ${pType==='()'?'(':'['}${fmtNum(b)} ${op2} ${fmtNum(c)}${pType==='()'?')':']'}`;
+    return makeRecord(display, rawExpr, {kind:'tri','shape':'a op (b±c)',op1,op2});
+  }else{ // C
+    const a=randInt(-10,10), b=randInt(-10,10), c=randInt(-10,10);
+    const op1=choice(['+','-']), op2=choice(['+','-']);
+    const pType = choice(['()','[]']);
+    const leftRaw = wrapParen(pType, `${a}${op1}${b}`);
+    const rawExpr = `${leftRaw}${op2}${c}`;
+    const display = `${pType==='()'?'(':'['}${fmtNum(a)} ${op1} ${fmtNum(b)}${pType==='()'?')':']'} ${op2} ${fmtNum(c)}`;
+    return makeRecord(display, rawExpr, {kind:'tri','shape':'(a±b)±c',op1,op2});
+  }
+}
+function genPrecedence(){
+  // 固定型： a ± (b ×/÷ c)   或   (a ×/÷ b) ± c
+  const variant = choice(['innerMD','leftMD']);
+  if(variant==='innerMD'){
+    let a=randInt(-12,12), b=randInt(-9,9), c=randInt(-9,9)||1;
+    const op1=choice(['+','-']), op2=choice(['×','÷']);
+    if(op2==='÷'){ if(c===0) c=1; b=(randInt(-6,6)||1)*c; }
+    const pType = choice(['()','[]']);
+    const rightRaw = wrapParen(pType, `${b}${op2}${c}`);
+    const rawExpr = `${a}${op1}${rightRaw}`;
+    const display = `${fmtNum(a)} ${op1} ${pType==='()'?'(':'['}${fmtNum(b)} ${op2} ${fmtNum(c)}${pType==='()'?')':']'}`;
+    return makeRecord(display, rawExpr, {kind:'preced','shape':'a ± (b op c)',op1,op2});
+  }else{
+    let a=randInt(-12,12), b=randInt(-9,9)||1, c=randInt(-9,9);
+    const op1=choice(['×','÷']), op2=choice(['+','-']);
+    if(op1==='÷'){ a=(randInt(-6,6)||1)*b; }
+    const pType = choice(['()','[]']);
+    const leftRaw = wrapParen(pType, `${a}${op1}${b}`);
+    const rawExpr = `${leftRaw}${op2}${c}`;
+    const display = `${pType==='()'?'(':'['}${fmtNum(a)} ${op1} ${fmtNum(b)}${pType==='()'?')':']'} ${op2} ${fmtNum(c)}`;
+    return makeRecord(display, rawExpr, {kind:'preced','shape':'(a op b) ± c',op1,op2});
+  }
+}
+function genQuestion(){
+  if(state.mode==='addsub') return genAddSub();
+  if(state.mode==='muldiv') return genMulDiv();
+  if(state.mode==='mixed')  return genMixed();
+  if(state.mode==='preced') return genPrecedence();
+  return genAddSub();
 }
 
-// ① 加減
+/* ==== 類題（同結構） ==== */
+function similarQuestion(struct){
+  // 重新依結構生成
+  if(!struct) return genQuestion();
+  if(struct.kind==='binAS') return genAddSub();
+  if(struct.kind==='binMD') return genMulDiv();
+  if(struct.kind==='tri'){
+    if(struct.shape==='(a±b)op c'){ return genMixed(); }
+    if(struct.shape==='a op (b±c)'){ return genMixed(); }
+    return genMixed();
+  }
+  if(struct.kind==='preced') return genPrecedence();
+  return genQuestion();
+}
+
+/* ==== 呈現與互動 ==== */
+function setProblem(text){ elProblem.textContent = text; }
+function setFeedback(html, good=false, show=true){
+  if(!show){ elFeedback.style.display='none'; return; }
+  elFeedback.innerHTML = html; elFeedback.style.display='block';
+  if(!good){ elFeedback.classList.add('shake'); setTimeout(()=>elFeedback.classList.remove('shake'),300); }
+}
+function pushHistory(item){ state.history.push(item); state.pointer = state.history.length-1; }
+function showCurrent(){
+  const h = state.history[state.pointer]; if(!h) return;
+  setProblem(h.displayExpr); elAnswer.value=''; setFeedback('',false,false);
+  elBtnPrev.disabled = (state.pointer<=0); elBtnNext.disabled = (state.pointer>=state.history.length-1);
+}
+function newQuestion(){
+  if(!state.mode){ setFeedback('請先選擇左側主題。', true, true); return; }
+  const q = genQuestion();
+  setProblem(q.displayExpr); elAnswer.value=''; setFeedback('',false,false);
+  pushHistory(q); elBtnPrev.disabled=(state.pointer<=0); elBtnNext.disabled=true; updateStats();
+}
+function startReview(){
+  if(state.reviewQueue.length===0){ setFeedback('目前沒有錯題可複習，先做幾題再回來吧 🌱', true, true); return; }
+  const struct = state.reviewQueue.shift();
+  const sim = similarQuestion(struct);
+  setProblem(sim.displayExpr + '（類題）'); elAnswer.value='';
+  setFeedback('<span class="kbd">提示：先 () → []，再 乘除，最後 加減（左→右）。</span>', true, true);
+  pushHistory(sim); updateStats(); elBtnPrev.disabled=(state.pointer<=0); elBtnNext.disabled=true;
+}
+
+/* ==== 診斷（盲點 + 建議） ==== */
+function diagnose(h, user){
+  const tips=[];
+  const e = h.displayExpr;
+  if(/[()\[\]]/.test(e)) tips.push('先處理括號層次：先 () 再 []，每算完一層再往外。');
+  if(e.includes('×')||e.includes('÷')) tips.push('括號後先做乘除（從左到右），最後才加減。');
+  if(/-\s*\(/.test(h.rawExpr)||/-\[/.test(h.rawExpr)) tips.push('看清「減負數」：a − (−b) 其實等於 a + b。');
+  if(Number.isFinite(user) && Number.isFinite(h.answer) && Math.abs(user-h.answer)===1) tips.push('只差 1！檢查最後一步是否抄錯或看錯號。');
+  tips.push('把負數與中間結果都用小括號標出（例如 (-4)），能降低看錯符號。');
+
+  const stepHtml = h.steps?.map((s,i)=>`<div class="step"><b>Step ${i+1}｜${s.title}</b><br><span class="kbd">${s.expr}</span></div>`).join('') || '';
+  return {tips, stepHtml};
+}
+
+/* ==== 計時模式 ==== */
+function startTimer(sec){
+  if(state.timer) clearInterval(state.timer);
+  state.timerMode = true; state.timeLeft = sec;
+  elTimerText.textContent = `${state.timeLeft} 秒`;
+  state.timer = setInterval(()=>{
+    state.timeLeft--;
+    elTimerText.textContent = `${state.timeLeft} 秒`;
+    if(state.timeLeft<=0){
+      clearInterval(state.timer); state.timer=null; state.timerMode=false;
+      elTimerText.textContent = '結束';
+      setFeedback(`⌛ 時間到！完成 <b>${state.history.length}</b> 題，正確 <b>${state.history.filter(h=>h.correct).length}</b> 題，得分 <b>${state.score}</b> 分。`, false, true);
+    }
+  },1000);
+}
+function stopTimer(){ if(state.timer){clearInterval(state.timer); state.timer=null;} state.timerMode=false; elTimerText.textContent='未開始'; }
+
+/* ==== 送出 ==== */
+function submit(){
+  const h = state.history[state.pointer]; if(!h) return;
+  const raw = elAnswer.value.trim(); if(!raw){ elAnswer.focus(); return; }
+  const user = Number(raw); const ok = (user===h.answer);
+  h.user = user; h.correct = ok;
+
+  if(ok){
+    playTone(true); state.score += SCORE_CORRECT; state.streak += 1;
+    setFeedback(`✅ <b>答對了！</b> ${h.displayExpr} = <b>${h.answer}</b><br><span class="muted">太棒了～規則掌握正確。</span><br>${diagnose(h,user).stepHtml}`, true, true);
+  }else{
+    playTone(false); state.score -= SCORE_WRONG; state.streak = 0;
+    if(h.structure) state.reviewQueue.push(h.structure);
+    const dx = diagnose(h, user);
+    setFeedback(
+      `❌ <b>可惜！</b> 正確答案：<b>${h.answer}</b><br>
+       <div class="step"><b>題目：</b><br><span class="kbd">${h.displayExpr}</span></div>
+       <div class="step"><b>規則提醒：</b> 先 <span class="kbd">()</span> → <span class="kbd">[]</span>，再 乘除，最後 加減（左→右）</div>
+       ${dx.stepHtml}
+       <b>給你的建議：</b><br>• ${dx.tips.join('<br>• ')}`,
+      false, true
+    );
+  }
+  elBtnNext.disabled = false;
+  updateStats();
+}
+
+/* ==== 綁定 ==== */
+elBtnPrev.addEventListener('click', ()=>{ if(state.pointer>0){ state.pointer--; showCurrent(); } });
+elBtnNext.addEventListener('click', ()=>{ if(state.pointer<state.history.length-1){ state.pointer++; showCurrent(); } else { newQuestion(); } });
+elBtnSubmit.addEventListener('click', submit);
+elBtnTimer60.addEventListener('click', ()=>{ stopTimer(); resetSessionStats(); startTimer(60); if(!state.mode){state.mode='mixed'; elModeLabel.textContent=Modes.find(m=>m.id==='mixed').label;} newQuestion(); });
+elBtnTimer120.addEventListener('click', ()=>{ stopTimer(); resetSessionStats(); startTimer(120); if(!state.mode){state.mode='mixed'; elModeLabel.textContent=Modes.find(m=>m.id==='mixed').label;} newQuestion(); });
+elBtnStopTimer.addEventListener('click', ()=>{ stopTimer(); });
+elBtnReview.addEventListener('click', startReview);
+elBtnReset.addEventListener('click', ()=>{
+  if(confirm('確定要重置統計與進度嗎？')){
+    stopTimer();
+    Object.assign(state,{history:[],pointer:-1,score:0,streak:0,reviewQueue:[]});
+    setProblem('已重置，請在左側選擇主題後按「下一題」開始'); setFeedback('',false,false); updateStats();
+    elBtnPrev.disabled=true; elBtnNext.disabled=true; elModeLabel.textContent='—';
+    document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+    state.mode=null;
+  }
+});
+elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
+
+/* 手機鍵盤（含負號） */
+(function buildKeypad(){
+  const keys=['7','8','9','⌫','4','5','6','清除','1','2','3','−','0','00','±','送出'];
+  keys.forEach(k=>{
+    const b=document.createElement('button'); b.className='key'+(k==='送出'?' primary':''); b.textContent=k;
+    b.addEventListener('click',()=>{
+      if(k==='送出') return submit();
+      if(k==='清除'){ elAnswer.value=''; return; }
+      if(k==='⌫'){ elAnswer.value = elAnswer.value.slice(0,-1); return; }
+      if(k==='−'){ if(!elAnswer.value.startsWith('-')) elAnswer.value='-'+elAnswer.value; return; }
+      if(k==='±'){ elAnswer.value = elAnswer.value.startsWith('-')? elAnswer.value.slice(1) : (elAnswer.value?('-'+elAnswer.value):'-'); return; }
+      elAnswer.value += k;
+    });
+    elKeypad.appendChild(b);
+  });
+})();
+
+/* 輔助 */
+function resetSessionStats(){ Object.assign(state,{history:[],pointer:-1,score:0,streak:0,reviewQueue:[]}); updateStats(); }
+function setFeedback(msg,good,show){ // 已定義在上方，這裡為避免壓過
+  const el = document.getElementById('feedback');
+  if(show===false){ el.style.display='none'; return; }
+  el.innerHTML = msg; el.style.display='block';
+  if(!good){ el.classList.add('shake'); setTimeout(()=>el.classList.remove('shake'),300); }
+}
+
+/* 初始化：建立模式按鈕後，引導 */
+setFeedback('請先選擇左側「練習主題」，然後按「下一題」開始。', true, true);
+updateStats();
+</script>
+</body>
+</html>
