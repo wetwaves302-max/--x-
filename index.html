@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>正負數四則運算練習｜可愛版</title>
+  <meta name="description" content="正負數加減乘除、運算順序練習；含計分、音效、錯題診斷與類題複習；手機友善。">
+  <style>
+    :root{
+      --bg:#fff8fb;
+      --card:#ffffff;
+      --primary:#ff88b3;
+      --primary-2:#ffd4e4;
+      --text:#333;
+      --muted:#777;
+      --good:#2e7d32;
+      --bad:#c62828;
+      --accent:#7c4dff;
+      --shadow:0 10px 25px rgba(255,136,179,0.15);
+      --radius:18px;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0; font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
+      background: linear-gradient(180deg, var(--bg), #fff);
+      color:var(--text);
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      background:linear-gradient(180deg, #fff, var(--bg));
+      padding:10px 12px 6px; box-shadow:0 4px 12px rgba(0,0,0,0.04);
+    }
+    .wrap{max-width:960px; margin:0 auto; padding:14px;}
+    .brand{
+      display:flex; align-items:center; gap:10px; padding:8px 10px;
+    }
+    .brand .logo{
+      width:40px; height:40px; border-radius:12px; background:var(--primary-2);
+      display:grid; place-items:center; font-size:22px; box-shadow:var(--shadow);
+    }
+    .brand h1{font-size:18px; margin:0;}
+    .brand p{margin:0; color:var(--muted); font-size:13px;}
+    .bar{
+      width:100%; height:10px; background:#f0f0f0; border-radius:999px; overflow:hidden; margin-top:10px;
+    }
+    .bar .fill{
+      height:100%; width:0%; background:linear-gradient(90deg,var(--primary),#ffa1c5);
+      transition:width .35s ease; border-radius:999px;
+    }
+    .stats{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; color:#444; font-size:13px;
+    }
+    .chip{
+      background:#fff; padding:6px 10px; border-radius:999px; box-shadow:var(--shadow);
+    }
+    .grid{
+      display:grid; gap:14px; grid-template-columns:1fr; margin-top:14px;
+    }
+    @media(min-width:900px){ .grid{ grid-template-columns: 260px 1fr; } }
+    .card{
+      background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px;
+    }
+    .section-title{font-weight:700; margin:0 0 8px; font-size:16px;}
+    .modes{ display:flex; flex-wrap:wrap; gap:8px; }
+    .mode-btn{
+      border:none; border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow);
+      font-size:14px; cursor:pointer; transition:transform .05s ease;
+    }
+    .mode-btn.active{ background:var(--primary); color:#fff; }
+    .mode-btn:active{ transform:scale(0.98); }
+    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .problem{
+      font-size:28px; font-weight:800; letter-spacing:.5px; padding:10px 14px; border-radius:14px;
+      background:linear-gradient(180deg,#fff,#fff2f6); box-shadow:var(--shadow);
+      display:flex; align-items:center; justify-content:center; min-height:72px;
+    }
+    .answer-area{ display:grid; grid-template-columns:1fr; gap:10px; }
+    .answer-input{
+      width:100%; font-size:20px; padding:12px 14px; border-radius:12px;
+      border:2px solid #eee; outline:none;
+    }
+    .answer-input:focus{border-color:var(--primary);}
+    .keypad{
+      display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;
+    }
+    .key{
+      padding:12px 10px; border:none; border-radius:12px; background:#fff; box-shadow:var(--shadow);
+      font-size:18px; cursor:pointer;
+    }
+    .key:active{ transform:scale(0.98); }
+    .key.primary{ background:var(--primary); color:#fff; }
+    .controls{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .btn{
+      border:none; border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow);
+      font-size:14px; cursor:pointer;
+    }
+    .btn.primary{ background:var(--primary); color:#fff; }
+    .btn.good{ background:#e6f4ea; color:var(--good); }
+    .btn.bad{ background:#fdecea; color:var(--bad); }
+    .feedback{
+      border-left:6px solid var(--primary); background:#fff; padding:10px 12px; border-radius:12px; box-shadow:var(--shadow);
+      line-height:1.6; font-size:15px;
+    }
+    .hint{ color:#5c6bc0; }
+    .muted{ color:var(--muted); font-size:12px; }
+    .pill{
+      display:inline-block; padding:4px 8px; background:var(--primary-2); border-radius:999px; font-size:12px;
+      margin-right:6px;
+    }
+    .footer{
+      text-align:center; color:var(--muted); padding:16px 0 40px; font-size:12px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#fff; box-shadow:var(--shadow);
+    }
+    .shake{ animation:shake .3s linear; }
+    @keyframes shake{
+      0%{transform:translateX(0)} 25%{transform:translateX(-3px)} 50%{transform:translateX(3px)} 75%{transform:translateX(-2px)} 100%{transform:translateX(0)}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">🌸</div>
+        <div>
+          <h1>正負數四則運算練習</h1>
+          <p>溫馨可愛・手機優先・含盲點診斷與類題複習 ✨</p>
+        </div>
+      </div>
+      <div class="bar" aria-label="progress"><div id="progressFill" class="fill" style="width:0%"></div></div>
+      <div class="stats" id="stats">
+        <span class="chip">題數：<b id="qCount">0</b></span>
+        <span class="chip">正確：<b id="qCorrect">0</b></span>
+        <span class="chip">正確率：<b id="qRate">0%</b></span>
+        <span class="chip">分數：<b id="score">0</b></span>
+        <span class="chip">連對：<b id="streak">0</b> 🔥</span>
+        <span class="chip badge">模式：<b id="modeLabel">—</b></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap grid">
+    <!-- 左：模式與設定 -->
+    <section class="card">
+      <h2 class="section-title">練習主題</h2>
+      <div class="modes" id="modes">
+        <!-- JS 生成 -->
+      </div>
+      <hr style="border:none;height:1px;background:#f2f2f2;margin:14px 0;">
+      <h2 class="section-title">小設定</h2>
+      <div class="row" style="gap:6px 10px">
+        <span class="pill">題庫範圍：−20～20（乘除自動挑整）</span>
+        <span class="pill">每題 +10 / 答錯 −5</span>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="btnReset">重置統計</button>
+        <button class="btn" id="btnReview" title="錯題複習（會出同結構類題）">開始錯題複習</button>
+        <span class="muted" id="reviewBadge">（目前錯題：0）</span>
+      </div>
+      <p class="muted" style="margin-top:8px">💡「錯題複習」：先顯示盲點，再出同結構類題，幫你補強概念。</p>
+    </section>
+
+    <!-- 右：作答區 -->
+    <section class="card">
+      <div class="row" style="justify-content:space-between; align-items:flex-start;">
+        <div class="problem" id="problem">請先選擇一個練習主題 👈</div>
+        <div class="row" style="gap:6px">
+          <button class="btn" id="btnPrev" disabled>上一題</button>
+          <button class="btn" id="btnNext" disabled>下一題</button>
+        </div>
+      </div>
+
+      <div class="grid" style="grid-template-columns: 1fr; margin-top:12px">
+        <div class="answer-area">
+          <input id="answer" class="answer-input" inputmode="numeric" placeholder="在這裡輸入答案（可用下方鍵盤）" />
+          <div class="keypad" id="keypad">
+            <!-- 0-9、負號、清除、退格、送出 -->
+          </div>
+          <div class="controls">
+            <button class="btn" id="btnSkip">略過</button>
+            <button class="btn primary" id="btnSubmit">送出</button>
+          </div>
+          <div id="feedback" class="feedback" style="display:none"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">© 2025 正負數小宇宙 · 為學習加油 💗</div>
+
+  <script>
+    /***************
+     * 可調整參數  *
+     ***************/
+    const SCORE_CORRECT = 10;
+    const SCORE_WRONG = 5; // 扣分用
+    const PROGRESS_TARGET = 20; // 進度條滿格的基準題數，可自行調整
+
+    /***************
+     * 狀態管理     *
+     ***************/
+    const state = {
+      mode: null,
+      history: [], // {expr, answer, user, correct, explain}
+      pointer: -1, // 目前題目指標（可用「上一題/下一題」瀏覽）
+      score: 0,
+      streak: 0,
+      reviewQueue: [], // 錯題結構佇列
+    };
+
+    const Modes = [
+      { id:'addsub', label:'① 正負數加減 ➕➖' },
+      { id:'muldiv', label:'② 正負數乘除 ✖️➗' },
+      { id:'mixed',  label:'③ 正負數四則混合 🔀' },
+      { id:'preced', label:'④ 先乘除，後加減 ⚖️' },
+    ];
+
+    /***************
+     * 工具函式     *
+     ***************/
+    const $ = sel => document.querySelector(sel);
+    const elModes = $('#modes');
+    const elProblem = $('#problem');
+    const elAnswer = $('#answer');
+    const elKeypad = $('#keypad');
+    const elFeedback = $('#feedback');
+
+    const elQCount = $('#qCount');
+    const elQCorrect = $('#qCorrect');
+    const elQRate = $('#qRate');
+    const elScore = $('#score');
+    const elStreak = $('#streak');
+    const elModeLabel = $('#modeLabel');
+    const elProgressFill = $('#progressFill');
+    const elReviewBadge = $('#reviewBadge');
+
+    const elBtnPrev = $('#btnPrev');
+    const elBtnNext = $('#btnNext');
+    const elBtnReset = $('#btnReset');
+    const elBtnReview = $('#btnReview');
+    const elBtnSkip = $('#btnSkip');
+    const elBtnSubmit = $('#btnSubmit');
+
+    function clampInt(n){ return (n|0); }
+    function randInt(a,b){ return clampInt(Math.floor(Math.random()*(b-a+1))+a); }
+    function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    function playTone(ok=true){
+      // WebAudio 簡易音效（無需外部檔案）
+      const ctx = new (window.AudioContext||window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = ok ? 'sine' : 'square';
+      o.frequency.value = ok ? 880 : 220;
+      o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.01);
+      o.start();
+      const dur = ok ? 0.12 : 0.18;
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+      o.stop(ctx.currentTime+dur+0.01);
+    }
+
+    function updateStats(){
+      const total = state.history.length;
+      const correct = state.history.filter(h=>h.correct).length;
+      const rate = total? Math.round(correct*100/total):0;
+      elQCount.textContent = total;
+      elQCorrect.textContent = correct;
+      elQRate.textContent = rate + '%';
+      elScore.textContent = state.score;
+      elStreak.textContent = state.streak;
+      const fill = Math.min(100, Math.round((total/PROGRESS_TARGET)*100));
+      elProgressFill.style.width = fill + '%';
+      elReviewBadge.textContent = `（目前錯題：${state.reviewQueue.length}）`;
+      elModeLabel.textContent = state.mode ? Modes.find(m=>m.id===state.mode).label : '—';
+      // 持久化
+      localStorage.setItem('int_arith_state', JSON.stringify(state, (k,v)=> k==='history' ? v.slice(-200) : v)); // 限制歷史長度
+    }
+
+    function loadPersist(){
+      try{
+        const s = JSON.parse(localStorage.getItem('int_arith_state')||'null');
+        if(!s) return;
+        Object.assign(state, s);
+        updateStats();
+      }catch(e){}
+    }
+
+    /*****************
+     * 題目產生器     *
+     *****************/
+    function genAddSub(){
+      const a = randInt(-20,20);
+      const b = randInt(-20,20);
+      const op = choice(['+','-']);
+      const expr = `${a} ${op} ${b}`;
+      const answer = op==='+' ? a+b : a-b;
+      return { type:'addsub', expr, answer, structure:{kind:'bin', signA:Math.sign(a), signB:Math.sign(b), op} };
+    }
+    function genMulDiv(){
+      // 乘除：避免除以 0，且讓結果多為整數
+      let b = 0;
+      while(b===0) b = randInt(-12,12);
+      const aBase = randInt(-12,12);
+      const op = choice(['×','÷']);
+      let a, answer;
+      if(op==='×'){
+        a = aBase;
+        answer = a*b;
+      }else{
+        // 讓 (a ÷ b) 為整數：先選結果與除數，回推被除數
+        const res = randInt(-12,12) || 1;
+        answer = res;
+        a = res*b;
+      }
+      const expr = `${a} ${op} ${b}`;
+      return { type:'muldiv', expr, answer, structure:{kind:'bin', signA:Math.sign(a), signB:Math.sign(b), op} };
+    }
+    function genMixed(){
+      // 兩步混合： (a op1 b) op2 c，可能包含乘除與加減
+      const ops = ['+','-','×','÷'];
+      let op1 = choice(ops), op2 = choice(ops);
+      // 盡量避免連續除法造成分數，稍微控制：
+      if(op1==='÷') op2 = choice(['+','-','×']);
+      let a = randInt(-12,12), b = randInt(-12,12), c = randInt(-12,12);
+      if(b===0 && op1==='÷') b=choice([-3,-2,-1,1,2,3]);
+      if(c===0 && op2==='÷') c=choice([-3,-2,-1,1,2,3]);
+
+      // 計算時依照正常優先序
+      const val = (x,op,y)=>{
+        if(op==='+') return x+y;
+        if(op==='-') return x-y;
+        if(op==='×') return x*y;
+        if(op==='÷') return (y===0? NaN : x/y);
+      };
+      // 為了避免小數：若有除法，回推整數
+      if(op1==='÷'){ // 保證 a 可以被 b 整除
+        let res = randInt(-10,10) || 1;
+        a = res * (b || 1);
+      }
+      if(op2==='÷'){
+        // 先計算 left = a op1 b，確保可整除
+        let left = val(a,op1,b);
+        if(left===undefined || isNaN(left)) left = 0;
+        let res2 = randInt(-10,10) || 1;
+        c = (c===0? 1 : Math.abs(c)) * Math.sign(c||1);
+        // 讓 left 可被 c 整除：left = res2 * c
+        c = c || 1;
+        left = res2 * c;
+        // 回推 a 以滿足 left = a op1 b
+        // 簡化：改選擇沒有除法的 op1，以免過度複雜
+        op1 = choice(['+','-','×']);
+        if(op1==='+'){ a = left - b; }
+        else if(op1==='-'){ a = left + b; }
+        else if(op1==='×'){ a = (b===0? left : (left/ (b||1))); if(!Number.isInteger(a)) { a = left; b = 1; } }
+      }
+
+      // 最終答案以實際優先序計算
+      function evalExpr(a,op1,b,op2,c){
+        const step1 = (op1==='×'||op1==='÷') ? val(a,op1,b) : null;
+        const step2 = (op2==='×'||op2==='÷') ? val((step1!==null? step1 : a), (step1!==null? op2 : op1==='×'||op1==='÷'? op2: op2), (step1!==null? c : (op1==='×'||op1==='÷'? c : b))) : null;
+        // 更簡潔：直接用標準優先序
+        const toVal = (x)=>x;
+        const exprJS = `${a} ${op1.replace('×','*').replace('÷','/')} ${b} ${op2.replace('×','*').replace('÷','/')} ${c}`;
+        const ans = Function(`"use strict";return (${exprJS});`)();
+        return ans;
+      }
+      const answer = evalExpr(a,op1,b,op2,c);
+      const expr = `${a} ${op1} ${b} ${op2} ${c}`;
+      return { type:'mixed', expr, answer, structure:{kind:'tri', op1, op2, signs:[Math.sign(a),Math.sign(b),Math.sign(c)]} };
+    }
+    function genPrecedence(){
+      // 無括號表達式，強調先乘除後加減： a (+/-) b (×/÷) c
+      let a = randInt(-15,15), b = randInt(-10,10), c = randInt(-10,10);
+      let op1 = choice(['+','-']);
+      let op2 = choice(['×','÷']);
+      if(op2==='÷'){ if(c===0) c = choice([-3,-2,-1,1,2,3]); }
+      // 讓 b×c 或 b÷c 產生整數
+      if(op2==='×'){
+        // ok
+      }else{
+        // 確保 b/c 為整數：先挑一個整數 res，再設定 b = res*c
+        const res = randInt(-10,10) || 1;
+        b = res * c;
+      }
+      const expr = `${a} ${op1} ${b} ${op2} ${c}`;
+      const answer = Function(`"use strict";return (${expr.replace(/×/g,'*').replace(/÷/g,'/')});`)();
+      return { type:'preced', expr, answer, structure:{kind:'preced', op1, op2, signs:[Math.sign(a),Math.sign(b),Math.sign(c)]} };
+    }
+
+    function genQuestion(){
+      if(state.mode==='addsub') return genAddSub();
+      if(state.mode==='muldiv') return genMulDiv();
+      if(state.mode==='mixed')  return genMixed();
+      if(state.mode==='preced') return genPrecedence();
+      return null;
+    }
+
+    /*****************
+     * 盲點診斷       *
+     *****************/
+    function diagnose(struct, correctAns, userAns){
+      // 根據常見錯誤模式給出淺白說明與建議
+      const tips = [];
+      const delta = userAns - correctAns;
+
+      function sgn(n){ return n===0? 0 : (n>0? 1:-1); }
+
+      if(struct.kind==='bin'){
+        const {op, signA, signB} = struct;
+        if(op==='+' || op==='-'){
+          // 常見：看錯「減負數」成「減正數」；或把「加負數」當「加正數」
+          if(op==='-' && signB===-1 && userAns === (correctAns + 2* Math.abs(struct.B || 0))){
+            tips.push('你可能把「減負數」當成了「減正數」。提醒：減掉負數等於加上正數（例：5 − (−3) = 5 + 3）。');
+          }
+          if(op==='+' && signB===-1 && userAns === (correctAns + 2* Math.abs(struct.B || 0))){
+            tips.push('你可能忽略了加數的負號，把「+ (−b)」看成「+ b」。請留意負號跟在數字前面。');
+          }
+          // 一般建議
+          tips.push('加減時，先判斷「方向」，再比較大小：同號 → 加大數後保留符號；異號 → 大小相減，取較大數的符號。');
+        }else{
+          // 乘除的符號規則
+          const isSignWrong = (sgn(userAns) !== 0) && (sgn(userAns) !== sgn(correctAns));
+          if(isSignWrong){
+            tips.push('你可能錯在「乘除的正負號規則」。同號得正、異號得負；（−）×（−）=（＋），（＋）÷（−）=（−）。');
+          }
+          tips.push('先看正負號規則，再做數值運算；最後別忘了把符號帶回答案。');
+        }
+      }else if(struct.kind==='preced'){
+        // 運算順序
+        tips.push('你可能忽略了「先乘除，後加減」的運算順序。請先算乘除，再把結果和加減合併。');
+        tips.push('在紙上可以先把乘除部分框起來計算，最後一次寫出完整式子。');
+      }else{
+        // 三項或混合
+        tips.push('出現兩個運算時，務必先處理乘除，再算加減。每步驟寫清楚，中間結果不要心算跳步。');
+      }
+
+      // 通用建議
+      if(Math.abs(delta)===1){
+        tips.push('你的答案只差 1，可能在最後一步抄寫或加減時出現小失誤，重算一次最後兩步。');
+      }
+      tips.push('小撇步：把負數用括號包起來（例如 (−3)），可以更清楚看到運算。');
+
+      return tips;
+    }
+
+    /*****************
+     * 類題產生       *
+     *****************/
+    function similarQuestion(struct){
+      // 用同樣的「結構/運算」再生一題不同數字
+      if(struct.kind==='bin'){
+        const op = struct.op;
+        let a = randInt(-12,12), b = randInt(-12,12);
+        // 控制符號趨勢
+        if(struct.signA!==0) a = Math.abs(a)*struct.signA;
+        if(struct.signB!==0) b = Math.abs(b)*struct.signB;
+        if(op==='÷' && b===0) b = choice([-3,-2,-1,1,2,3]);
+        const expr = `${a} ${op==='×'?'×': (op==='÷'?'÷':op)} ${b}`;
+        const ans = Function(`"use strict";return (${expr.replace(/×/g,'*').replace(/÷/g,'/')});`)();
+        return {expr, answer: ans};
+      }
+      if(struct.kind==='preced'){
+        // a (+/-) b (×/÷) c
+        let a = randInt(-15,15), c = randInt(-10,10);
+        let b = randInt(-10,10);
+        let {op1, op2, signs} = struct;
+        if(op2==='÷'){ if(c===0) c=choice([-3,-2,-1,1,2,3]); b = (randInt(-8,8)||1) * c; }
+        const expr = `${a} ${op1} ${b} ${op2} ${c}`;
+        const ans = Function(`"use strict";return (${expr.replace(/×/g,'*').replace(/÷/g,'/')});`)();
+        return {expr, answer: ans};
+      }
+      if(struct.kind==='tri'){
+        // a op1 b op2 c（保留運算子結構）
+        let a = randInt(-10,10), b = randInt(-10,10), c = randInt(-10,10);
+        let {op1, op2} = struct;
+        if(op1==='÷' && b===0) b=choice([-3,-2,-1,1,2,3]);
+        if(op2==='÷' && c===0) c=choice([-3,-2,-1,1,2,3]);
+        const expr = `${a} ${op1} ${b} ${op2} ${c}`;
+        const ans = Function(`"use strict";return (${expr.replace(/×/g,'*').replace(/÷/g,'/')});`)();
+        return {expr, answer: ans};
+      }
+      // fallback
+      const q = genQuestion();
+      return {expr:q.expr, answer:q.answer};
+    }
+
+    /*****************
+     * 呈現與互動     *
+     *****************/
+    function setProblem(text){
+      elProblem.textContent = text;
+    }
+    function setFeedback(html, good=false, show=true){
+      if(!show){ elFeedback.style.display='none'; return; }
+      elFeedback.innerHTML = html;
+      elFeedback.style.display = 'block';
+      if(!good){ elFeedback.classList.add('shake'); setTimeout(()=>elFeedback.classList.remove('shake'), 300); }
+    }
+
+    function pushHistory(item){
+      state.history.push(item);
+      state.pointer = state.history.length - 1;
+    }
+
+    function showCurrent(){
+      const h = state.history[state.pointer];
+      if(!h){ return; }
+      setProblem(h.expr);
+      elAnswer.value = '';
+      setFeedback('', false, false);
+      elBtnPrev.disabled = (state.pointer<=0);
+      elBtnNext.disabled = (state.pointer>=state.history.length-1);
+    }
+
+    function newQuestion(fromReview=false){
+      if(!state.mode && !fromReview){ return; }
+      const q = genQuestion();
+      setProblem(q.expr);
+      elAnswer.value = '';
+      setFeedback('', false, false);
+      pushHistory({expr:q.expr, answer:q.answer, user:null, correct:null, explain:null, structure:q.structure});
+      elBtnPrev.disabled = (state.pointer<=0);
+      elBtnNext.disabled = true;
+      updateStats();
+    }
+
+    function startReview(){
+      if(state.reviewQueue.length===0){
+        setFeedback('目前沒有錯題可以複習，先做幾題再回來吧 🌱', true, true);
+        return;
+      }
+      // 取出一個結構，出類題
+      const struct = state.reviewQueue.shift();
+      const sim = similarQuestion(struct);
+      setProblem(sim.expr + '（類題）');
+      elAnswer.value = '';
+      setFeedback('<span class="hint">這題是依照你的錯誤類型出的「類題」。先依提示思考，再試一次！</span>', true, true);
+      pushHistory({expr:sim.expr, answer:sim.answer, user:null, correct:null, explain:'（類題練習）', structure:struct});
+      updateStats();
+      elBtnPrev.disabled = (state.pointer<=0);
+      elBtnNext.disabled = true;
+    }
+
+    function submit(){
+      const h = state.history[state.pointer];
+      if(!h){ return; }
+      const raw = elAnswer.value.trim();
+      if(!raw){ elAnswer.focus(); return; }
+      const user = Number(raw);
+      const correct = (user === h.answer);
+      h.user = user;
+      h.correct = correct;
+
+      if(correct){
+        playTone(true);
+        state.score += SCORE_CORRECT;
+        state.streak += 1;
+        setFeedback(`✅ <b>答對了！</b> ${h.expr} = <b>${h.answer}</b><br>
+        <span class="muted">太棒了～繼續保持！</span>`, true, true);
+      }else{
+        playTone(false);
+        state.score -= SCORE_WRONG;
+        state.streak = 0;
+        const tips = diagnose(h.structure || {kind:'bin'}, h.answer, user);
+        h.explain = tips.join('<br>');
+        // 推入錯題結構進複習佇列
+        if(h.structure) state.reviewQueue.push(h.structure);
+        setFeedback(`❌ <b>可惜！</b> 正確答案是 <b>${h.answer}</b><br><br>
+        <b>盲點診斷：</b><br>${tips.map(t=>`• ${t}`).join('<br>')}<br><br>
+        <span class="hint">👉 小練習：點「開始錯題複習」會出同結構的類題喔！</span>`, false, true);
+      }
+      elBtnNext.disabled = false;
+      updateStats();
+    }
+
+    /*****************
+     * 事件綁定       *
+     *****************/
+    // 建立模式按鈕
+    function buildModeButtons(){
+      Modes.forEach(m=>{
+        const b = document.createElement('button');
+        b.className = 'mode-btn';
+        b.textContent = m.label;
+        b.addEventListener('click', ()=>{
+          document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+          b.classList.add('active');
+          state.mode = m.id;
+          state.streak = 0;
+          setFeedback('已切換模式，開始新一題吧！', true, true);
+          newQuestion();
+          updateStats();
+        });
+        elModes.appendChild(b);
+      });
+    }
+
+    // 建立數字鍵盤
+    function buildKeypad(){
+      const keys = [
+        '7','8','9','⌫',
+        '4','5','6','清除',
+        '1','2','3','−',
+        '0','00','±','送出'
+      ];
+      keys.forEach(k=>{
+        const btn = document.createElement('button');
+        btn.className = 'key' + (k==='送出' ? ' primary':'');
+        btn.textContent = k;
+        btn.addEventListener('click', ()=>{
+          if(k==='送出'){ submit(); return; }
+          if(k==='清除'){ elAnswer.value=''; return; }
+          if(k==='⌫'){ elAnswer.value = elAnswer.value.slice(0,-1); return; }
+          if(k==='−'){ // 插入負號
+            if(elAnswer.value.startsWith('-')) return; // 只允許一個前綴負號
+            elAnswer.value = '-' + elAnswer.value;
+            return;
+          }
+          if(k==='±'){
+            if(elAnswer.value.startsWith('-')) elAnswer.value = elAnswer.value.slice(1);
+            else elAnswer.value = (elAnswer.value? ('-'+elAnswer.value) : '-');
+            return;
+          }
+          // 數字
+          elAnswer.value += k;
+        });
+        elKeypad.appendChild(btn);
+      });
+    }
+
+    // 主要控制按鈕
+    elBtnSubmit.addEventListener('click', submit);
+    elBtnSkip.addEventListener('click', ()=>{ newQuestion(); });
+    elBtnPrev.addEventListener('click', ()=>{
+      if(state.pointer>0){ state.pointer--; showCurrent(); }
+    });
+    elBtnNext.addEventListener('click', ()=>{
+      if(state.pointer < state.history.length-1){ state.pointer++; showCurrent(); }
+      else { newQuestion(); }
+    });
+    elBtnReset.addEventListener('click', ()=>{
+      if(confirm('確定要重置統計與進度嗎？（不會刪除題目內容）')){
+        state.history=[]; state.pointer=-1; state.score=0; state.streak=0; state.reviewQueue=[];
+        setProblem('已重置，請選擇主題或按「下一題」開始。');
+        setFeedback('', false, false);
+        updateStats();
+        elBtnPrev.disabled = true; elBtnNext.disabled = true;
+      }
+    });
+    elBtnReview.addEventListener('click', startReview);
+
+    // 鍵盤 Enter 送出
+    elAnswer.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){ submit(); }
+    });
+
+    // 初始化
+    buildModeButtons();
+    buildKeypad();
+    loadPersist();
+    updateStats();
+
+    // 首次提示
+    if(!state.mode){
+      setFeedback('請先在左側選擇一個練習主題（例如「① 正負數加減」），再開始作答。', true, true);
+    }else{
+      newQuestion();
+    }
+  </script>
+</body>
+</html>
