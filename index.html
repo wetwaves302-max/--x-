@@ -1,480 +1,451 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>正負數四則運算練習｜先加減後乘除（含括號）</title>
-  <meta name="description" content="正負數加減乘除、先加減後乘除；含計分、音效、盲點診斷與錯題類題複習；手機友善；所有算式保留( )。">
-  <style>
-    :root{
-      --bg:#fff8fb; --card:#ffffff; --primary:#ff88b3; --primary-2:#ffd4e4;
-      --text:#333; --muted:#777; --good:#2e7d32; --bad:#c62828; --shadow:0 10px 25px rgba(255,136,179,0.15);
-      --radius:18px;
-    }
-    *{box-sizing:border-box;}
-    body{margin:0; font-family:ui-rounded,"Segoe UI",system-ui,-apple-system,"PingFang TC","Noto Sans TC",sans-serif;
-      background:linear-gradient(180deg,var(--bg),#fff); color:var(--text);}
-    header{position:sticky; top:0; z-index:10; background:linear-gradient(180deg,#fff,var(--bg));
-      padding:10px 12px 6px; box-shadow:0 4px 12px rgba(0,0,0,0.04);}
-    .wrap{max-width:960px; margin:0 auto; padding:14px;}
-    .brand{display:flex; gap:10px; align-items:center; padding:8px 10px;}
-    .brand .logo{width:40px; height:40px; border-radius:12px; background:var(--primary-2); display:grid; place-items:center; font-size:22px; box-shadow:var(--shadow);}
-    .brand h1{margin:0; font-size:18px;}
-    .brand p{margin:0; color:var(--muted); font-size:13px;}
-    .bar{width:100%; height:10px; background:#f0f0f0; border-radius:999px; overflow:hidden; margin-top:10px;}
-    .bar .fill{height:100%; width:0%; background:linear-gradient(90deg,var(--primary),#ffa1c5); transition:width .35s; border-radius:999px;}
-    .stats{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; color:#444; font-size:13px;}
-    .chip{background:#fff; padding:6px 10px; border-radius:999px; box-shadow:var(--shadow);}
-    .grid{display:grid; gap:14px; grid-template-columns:1fr; margin-top:14px;}
-    @media(min-width:900px){ .grid{grid-template-columns:260px 1fr;} }
-    .card{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px;}
-    .section-title{margin:0 0 8px; font-size:16px; font-weight:700;}
-    .modes{display:flex; flex-wrap:wrap; gap:8px;}
-    .mode-btn{border:none; border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow); font-size:14px; cursor:pointer;}
-    .mode-btn.active{background:var(--primary); color:#fff;}
-    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-    .problem{font-size:28px; font-weight:800; letter-spacing:.5px; padding:10px 14px; border-radius:14px;
-      background:linear-gradient(180deg,#fff,#fff2f6); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:center; min-height:72px;}
-    .answer-area{display:grid; grid-template-columns:1fr; gap:10px;}
-    .answer-input{width:100%; font-size:20px; padding:12px 14px; border-radius:12px; border:2px solid #eee; outline:none;}
-    .answer-input:focus{border-color:var(--primary);}
-    .keypad{display:grid; grid-template-columns:repeat(4,1fr); gap:8px;}
-    .key{padding:12px 10px; border:none; border-radius:12px; background:#fff; box-shadow:var(--shadow); font-size:18px; cursor:pointer;}
-    .key.primary{background:var(--primary); color:#fff;}
-    .controls{display:flex; gap:8px; flex-wrap:wrap;}
-    .btn{border:none; border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow); font-size:14px; cursor:pointer;}
-    .btn.primary{background:var(--primary); color:#fff;}
-    .feedback{border-left:6px solid var(--primary); background:#fff; padding:10px 12px; border-radius:12px; box-shadow:var(--shadow); line-height:1.6; font-size:15px;}
-    .hint{color:#5c6bc0;} .muted{color:var(--muted); font-size:12px;}
-    .footer{text-align:center; color:var(--muted); padding:16px 0 40px; font-size:12px;}
-    .shake{animation:shake .3s linear;} @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>正負數四則運算｜()→[]→{} → 乘除 → 加減（含計時與難度）</title>
+<meta name="description" content="遵循先小括號()、再中括號[]、再大括號{}，接著先乘除後加減，同層由左到右；支援計時模式與難度星等；含即時回饋與錯題類題複習。">
+<style>
+  :root{
+    --bg:#fff8fb; --card:#fff; --primary:#ff88b3; --primary2:#ffd4e4;
+    --text:#333; --muted:#777; --good:#2e7d32; --bad:#c62828;
+    --shadow:0 10px 25px rgba(255,136,179,.15); --r:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-rounded,"Segoe UI",system-ui,-apple-system,"PingFang TC","Noto Sans TC",sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:var(--text)}
+  header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#fff,var(--bg));padding:10px 12px 6px;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+  .wrap{max-width:980px;margin:0 auto;padding:14px}
+  .brand{display:flex;gap:10px;align-items:center;padding:8px 10px}
+  .logo{width:40px;height:40px;border-radius:12px;background:var(--primary2);display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow)}
+  .brand h1{margin:0;font-size:18px}
+  .brand p{margin:0;color:var(--muted);font-size:13px}
+
+  .principles{margin-top:8px;padding:12px;border-radius:14px;background:#fff;box-shadow:var(--shadow);border-left:6px solid var(--primary)}
+  .principles h2{margin:0 0 8px;font-size:16px}
+  .principles ol{margin:0;padding-left:20px}
+  .pill{display:inline-block;margin-right:8px;margin-top:8px;padding:4px 10px;border-radius:999px;background:#ffe5ef;font-size:12px}
+
+  .bar{width:100%;height:10px;background:#f0f0f0;border-radius:999px;overflow:hidden;margin-top:10px}
+  .fill{height:100%;width:0;background:linear-gradient(90deg,var(--primary),#ffa1c5);transition:width .35s;border-radius:999px}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;color:#444;font-size:13px}
+  .chip{background:#fff;padding:6px 10px;border-radius:999px;box-shadow:var(--shadow)}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#fff;box-shadow:var(--shadow)}
+  .timer{font-weight:700;color:#c62828}
+
+  .grid{display:grid;gap:14px;grid-template-columns:1fr;margin-top:14px}
+  @media(min-width:900px){.grid{grid-template-columns:280px 1fr}}
+
+  .card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
+  .section-title{margin:0 0 8px;font-size:16px;font-weight:700}
+
+  .problem{font-size:26px;font-weight:800;letter-spacing:.5px;padding:12px 14px;border-radius:14px;
+           background:linear-gradient(180deg,#fff,#fff2f6);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;min-height:72px;word-break:break-word}
+  .answer-area{display:grid;grid-template-columns:1fr;gap:10px}
+  .answer-input{width:100%;font-size:20px;padding:12px 14px;border-radius:12px;border:2px solid #eee;outline:none}
+  .answer-input:focus{border-color:var(--primary)}
+  .keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .key{padding:12px 10px;border:none;border-radius:12px;background:#fff;box-shadow:var(--shadow);font-size:18px;cursor:pointer}
+  .key.primary{background:var(--primary);color:#fff}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{border:none;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
+  .btn.primary{background:var(--primary);color:#fff}
+  .feedback{border-left:6px solid var(--primary);background:#fff;padding:10px 12px;border-radius:12px;box-shadow:var(--shadow);line-height:1.6;font-size:15px}
+  .step{padding:6px 10px;background:#fafafa;border-radius:10px;margin:6px 0;border:1px dashed #eee}
+  .kbd{font-family:ui-monospace,Consolas,Menlo,monospace;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:6px;padding:0 6px}
+  .muted{color:#777;font-size:12px}
+  .shake{animation:shake .3s linear}
+  @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
+  .footer{text-align:center;color:var(--muted);padding:16px 0 40px;font-size:12px}
+</style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="brand">
-        <div class="logo">🌸</div>
-        <div>
-          <h1>正負數四則運算練習（先加減，後乘除）</h1>
-          <p>溫馨可愛・手機優先・含盲點診斷與類題複習 ✨（所有算式保留括號）</p>
-        </div>
-      </div>
-      <div class="bar" aria-label="progress"><div id="progressFill" class="fill"></div></div>
-      <div class="stats" id="stats">
-        <span class="chip">題數：<b id="qCount">0</b></span>
-        <span class="chip">正確：<b id="qCorrect">0</b></span>
-        <span class="chip">正確率：<b id="qRate">0%</b></span>
-        <span class="chip">分數：<b id="score">0</b></span>
-        <span class="chip">連對：<b id="streak">0</b> 🔥</span>
-        <span class="chip">模式：<b id="modeLabel">—</b></span>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">🌸</div>
+      <div>
+        <h1>正負數四則運算（含(),[],{}；計時＋難度）</h1>
+        <p>規則：先()→[]→{} → 乘除 → 加減（同層由左至右）</p>
       </div>
     </div>
-  </header>
 
-  <main class="wrap grid">
-    <!-- 左：模式與設定 -->
-    <section class="card">
-      <h2 class="section-title">練習主題</h2>
-      <div class="modes" id="modes"></div>
-      <hr style="border:none;height:1px;background:#f2f2f2;margin:14px 0;">
-      <h2 class="section-title">小設定</h2>
-      <div class="row" style="gap:6px 10px">
-        <span class="muted">題庫範圍：−20～20（除法避免 0、盡量整數）</span>
-        <span class="muted">每題 +10 / 答錯 −5；所有數字與步驟以 ( ) 顯示</span>
-      </div>
-      <div class="row" style="margin-top:8px">
-        <button class="btn" id="btnReset">重置統計</button>
-        <button class="btn" id="btnReview" title="錯題複習（出同結構類題）">開始錯題複習</button>
-        <span class="muted" id="reviewBadge">（目前錯題：0）</span>
-      </div>
-      <p class="muted" style="margin-top:8px">💡 本版採「先加減，後乘除」的特殊規則，題面會用括號清楚標示先算的加減群組。</p>
-    </section>
+    <!-- 四則運算原則：清楚可見 -->
+    <div class="principles">
+      <h2>四則運算原則（請牢記！）</h2>
+      <ol>
+        <li><b>先算括號</b>：先小 <span class="kbd">()</span> → 再中 <span class="kbd">[]</span> → 最後大 <span class="kbd">{}</span>（由內向外）。</li>
+        <li>括號處理完後，<b>先乘除</b>（左 → 右）。</li>
+        <li>最後做<b>加減</b>（左 → 右）。</li>
+      </ol>
+      <span class="pill">小技巧：把負數寫成 <span class="kbd">(-3)</span> 可避免看錯號</span>
+      <span class="pill">每化簡一步，重新寫一行，避免在腦中同時處理太多步</span>
+    </div>
 
-    <!-- 右：作答區 -->
-    <section class="card">
-      <div class="row" style="justify-content:space-between; align-items:flex-start;">
-        <div class="problem" id="problem">請先選擇一個練習主題 👈</div>
-        <div class="row" style="gap:6px">
-          <button class="btn" id="btnPrev" disabled>上一題</button>
-          <button class="btn" id="btnNext" disabled>下一題</button>
-        </div>
-      </div>
+    <div class="bar" aria-label="progress"><div id="progressFill" class="fill"></div></div>
+    <div class="stats">
+      <span class="chip">題數：<b id="qCount">0</b></span>
+      <span class="chip">正確：<b id="qCorrect">0</b></span>
+      <span class="chip">正確率：<b id="qRate">0%</b></span>
+      <span class="chip">分數：<b id="score">0</b></span>
+      <span class="chip">連對：<b id="streak">0</b> 🔥</span>
+      <span class="badge">模式：<b id="modeLabel">一般練習</b></span>
+      <span class="badge" id="timerBadge">⏱ 計時：<span class="timer" id="timerText">未開始</span></span>
+    </div>
+  </div>
+</header>
 
-      <div class="grid" style="grid-template-columns:1fr; margin-top:12px">
-        <div class="answer-area">
-          <input id="answer" class="answer-input" inputmode="numeric" placeholder="在這裡輸入答案（可用下方鍵盤）" />
-          <div class="keypad" id="keypad"></div>
-          <div class="controls">
-            <button class="btn" id="btnSkip">略過</button>
-            <button class="btn primary" id="btnSubmit">送出</button>
-          </div>
-          <div id="feedback" class="feedback" style="display:none"></div>
-        </div>
-      </div>
-    </section>
-  </main>
+<main class="wrap grid">
+  <!-- 左：控制 -->
+  <section class="card">
+    <h2 class="section-title">控制與設定</h2>
+    <div class="controls" style="margin-bottom:8px">
+      <button class="btn" id="btnNext">下一題</button>
+      <button class="btn primary" id="btnSubmit">送出</button>
+    </div>
+    <div class="controls">
+      <button class="btn" id="btnTimer60">開始計時挑戰（60秒）</button>
+      <button class="btn" id="btnTimer120">開始計時挑戰（120秒）</button>
+      <button class="btn" id="btnStopTimer">停止計時</button>
+    </div>
+    <div class="controls" style="margin-top:8px">
+      <button class="btn" id="btnReview">開始錯題複習</button>
+      <button class="btn" id="btnReset">重置統計</button>
+    </div>
+    <p class="muted" style="margin-top:6px">計分：答對 +10、答錯 −5；計時模式下時間到會自動結算。</p>
+  </section>
 
-  <div class="footer">© 2025 正負數小宇宙 · 為學習加油 💗</div>
+  <!-- 右：作答 -->
+  <section class="card">
+    <div class="problem" id="problem">請按「下一題」開始（每題會顯示 ⭐ 難度）</div>
 
-  <script>
-    /***************
-     * 可調整參數  *
-     ***************/
-    const SCORE_CORRECT = 10;
-    const SCORE_WRONG = 5;
-    const PROGRESS_TARGET = 20;
+    <div class="answer-area">
+      <input id="answer" class="answer-input" inputmode="numeric" placeholder="輸入答案後按「送出」或 Enter"/>
+      <div class="keypad" id="keypad"></div>
+      <div id="feedback" class="feedback" style="display:none"></div>
+    </div>
+  </section>
+</main>
 
-    /***************
-     * 狀態管理     *
-     ***************/
-    const state = {
-      mode: null,
-      history: [], // {displayExpr, tokens, answer, user, correct, explain, structure}
-      pointer: -1,
-      score: 0,
-      streak: 0,
-      reviewQueue: [],
-    };
+<div class="footer">© 2025 正負數小宇宙 · 規則清晰，計算不迷路 💗</div>
 
-    const Modes = [
-      { id:'addsub', label:'① 正負數加減 ➕➖' },
-      { id:'muldiv', label:'② 正負數乘除 ✖️➗' },
-      { id:'mixed',  label:'③ 正負數四則混合 🔀（先加減後乘除）' },
-      { id:'preced', label:'④ 先加減，後乘除 ⚖️' },
-    ];
+<script>
+/* ==== 可調整參數 ==== */
+const SCORE_CORRECT = 10;
+const SCORE_WRONG = 5;
+const PROGRESS_TARGET = 20;
 
-    /***************
-     * 小工具       *
-     ***************/
-    const $ = sel => document.querySelector(sel);
-    const elModes = $('#modes'), elProblem = $('#problem'), elAnswer = $('#answer'),
-          elKeypad = $('#keypad'), elFeedback = $('#feedback'),
-          elQCount = $('#qCount'), elQCorrect = $('#qCorrect'), elQRate = $('#qRate'),
-          elScore = $('#score'), elStreak = $('#streak'), elModeLabel = $('#modeLabel'),
-          elProgressFill = $('#progressFill'), elReviewBadge = $('#reviewBadge'),
-          elBtnPrev = $('#btnPrev'), elBtnNext = $('#btnNext'), elBtnReset = $('#btnReset'),
-          elBtnReview = $('#btnReview'), elBtnSkip = $('#btnSkip'), elBtnSubmit = $('#btnSubmit');
+/* ==== 狀態 ==== */
+const state = {
+  history:[], // {expr, answer, steps, user, correct, structure, stars}
+  pointer:-1,
+  score:0, streak:0,
+  timerMode:false, timeLeft:0, timer:null,
+  reviewQueue:[],
+};
 
-    function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
-    function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-    const isAddSub = op => (op==='+'||op==='-');
-    const isMulDiv = op => (op==='×'||op==='÷');
+const $ = s=>document.querySelector(s);
+const elProblem = $('#problem'), elAnswer = $('#answer'), elFeedback = $('#feedback');
+const elQCount = $('#qCount'), elQCorrect = $('#qCorrect'), elQRate = $('#qRate');
+const elScore = $('#score'), elStreak = $('#streak'), elProgressFill = $('#progressFill');
+const elTimerText = $('#timerText'), elModeLabel = $('#modeLabel');
 
-    // 格式化：所有數字都放在 ( ) 內，貼近紙筆
-    function showNum(n){ return `(${n})`; }
+/* ==== 工具 ==== */
+function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function choice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function showNum(n){ return `(${n})`; } // 書寫風格統一
+function playTone(ok=true){
+  const ctx = new (window.AudioContext||window.webkitAudioContext)();
+  const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.type = ok ? 'sine' : 'square'; o.frequency.value = ok ? 880 : 220;
+  o.connect(g); g.connect(ctx.destination); g.gain.setValueAtTime(0.001, ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.01);
+  o.start(); const dur = ok ? 0.12 : 0.18; g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+  o.stop(ctx.currentTime+dur+0.01);
+}
+function updateStats(){
+  const total = state.history.length;
+  const correct = state.history.filter(h=>h.correct).length;
+  const rate = total? Math.round(correct*100/total):0;
+  elQCount.textContent = total; elQCorrect.textContent = correct; elQRate.textContent = rate+'%';
+  elScore.textContent = state.score; elStreak.textContent = state.streak;
+  elProgressFill.style.width = Math.min(100, Math.round((total/PROGRESS_TARGET)*100))+'%';
+  localStorage.setItem('int_arith_nested_rules_v1', JSON.stringify(state,(k,v)=>k==='history'?v.slice(-200):v));
+}
 
-    // 音效
-    function playTone(ok=true){
-      const ctx = new (window.AudioContext||window.webkitAudioContext)();
-      const o = ctx.createOscillator(); const g = ctx.createGain();
-      o.type = ok ? 'sine' : 'square'; o.frequency.value = ok ? 880 : 220;
-      o.connect(g); g.connect(ctx.destination);
-      g.gain.setValueAtTime(0.001, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.01);
-      o.start(); const dur = ok ? 0.12 : 0.18;
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
-      o.stop(ctx.currentTime+dur+0.01);
-    }
+/* ==== 規則解析器 ====
+   先() → [] → {}，同層由內向外；再 乘除（左→右）；再 加減（左→右）
+   回傳 {value, steps}
+*/
+function evalByRules(exprInput){
+  let expr = exprInput.replace(/\s+/g,'');
+  const steps = [];
+  const pushStep = (title, e=expr)=>steps.push({title, expr:e});
 
-    function updateStats(){
-      const total = state.history.length;
-      const correct = state.history.filter(h=>h.correct).length;
-      const rate = total? Math.round(correct*100/total):0;
-      elQCount.textContent = total; elQCorrect.textContent = correct; elQRate.textContent = rate + '%';
-      elScore.textContent = state.score; elStreak.textContent = state.streak;
-      elProgressFill.style.width = Math.min(100, Math.round((total/PROGRESS_TARGET)*100)) + '%';
-      elReviewBadge.textContent = `（目前錯題：${state.reviewQueue.length}）`;
-      elModeLabel.textContent = state.mode ? Modes.find(m=>m.id===state.mode).label : '—';
-      localStorage.setItem('int_arith_state_prefsADMD', JSON.stringify(state, (k,v)=> k==='history' ? v.slice(-200) : v));
-    }
-    (function loadPersist(){
-      try{ const s = JSON.parse(localStorage.getItem('int_arith_state_prefsADMD')||'null'); if(s){ Object.assign(state, s); updateStats(); } }catch(e){}
-    })();
-
-    /***********************
-     * 自訂運算評分邏輯     *
-     * 規則：先加減，後乘除 *
-     ***********************/
-    // tokens 形式： [number, op, number, op, number]，op in ['+','-','×','÷']
-    function evalWithAddFirst(tokens){
-      // 第一段：先把 + / - 由左到右做完，留下乘除待後
-      // 例：a + b × c - d → ((a + b) × c) - d，但我們第一段只合併加減：a' × c - d
-      let arr = tokens.slice();
-      // 合併所有加減
-      for(let i=1; i<arr.length-1; ){
-        const op = arr[i];
-        if(isAddSub(op)){
-          const left = arr[i-1], right = arr[i+1];
-          const val = (op==='+') ? (left + right) : (left - right);
-          // 替換成一個數字
-          arr.splice(i-1, 3, val);
-          // i 回到上一個位置繼續檢查
-          i = Math.max(1, i-2);
-        }else{
-          i += 2;
+  function reduceBracketType(open, close, label){
+    while(true){
+      let stack=[], found=false, L=-1, R=-1;
+      for(let i=0;i<expr.length;i++){
+        if(expr[i]===open){ stack.push(i); }
+        else if(expr[i]===close){
+          if(stack.length){
+            L = stack.pop();
+            if(stack.length===0){ R=i; found=true; break; }
+          }
         }
       }
-      // 第二段：剩下只會有乘除，從左到右
-      let result = arr[0];
-      for(let i=1; i<arr.length; i+=2){
-        const op = arr[i], right = arr[i+1];
-        if(op==='×') result = result * right;
-        else if(op==='÷'){
-          if(right===0) return NaN;
-          result = result / right;
-        }
-      }
-      return result;
+      if(!found) break;
+      const inside = expr.slice(L+1,R);
+      const inner = evalFlat(inside); // 內層不跨層括號
+      expr = expr.slice(0,L) + inner.value + expr.slice(R+1);
+      pushStep(`計算${label} ${open}…${close}`, expr);
     }
+  }
 
-    function buildDisplayFromTokens(tokens){
-      // 依規則加上括號：先把所有「加減群組」加括號
-      // 三數兩運算的情況，容易辨識：
-      if(tokens.length===5){
-        const [a,op1,b,op2,c] = tokens;
-        // 若存在加減與乘除混合，將加減群組括起來
-        if(isAddSub(op1) && isMulDiv(op2)){
-          // (a ± b) ×/÷ c
-          return `(${showNum(a)} ${op1} ${showNum(b)}) ${op2} ${showNum(c)}`;
-        }
-        if(isMulDiv(op1) && isAddSub(op2)){
-          // a ×/÷ (b ± c)
-          return `${showNum(a)} ${op1} (${showNum(b)} ${op2} ${showNum(c)})`;
-        }
-        // 同類型（都加減 或 都乘除）：仍用 ( ) 包住每個數，維持一致視覺
-        return `${showNum(a)} ${op1} ${showNum(b)} ${op2} ${showNum(c)}`;
-      }
-      // 二元
-      if(tokens.length===3){
-        const [a,op,b] = tokens;
-        return `${showNum(a)} ${op} ${showNum(b)}`;
-      }
-      // Fallback：逐段
-      return tokens.map(t => (typeof t==='number' ? showNum(t) : t)).join(' ');
+  // 平面層（無任何括號）計算：乘除→加減（左→右）
+  function tokenize(s){
+    const tokens=[]; let i=0;
+    while(i<s.length){
+      const ch = s[i];
+      if(/[0-9]/.test(ch) || (ch==='-' && (i===0 || /[+\-×÷*/]/.test(s[i-1])))){
+        let j=i+1; while(j<s.length && /[0-9]/.test(s[j])) j++;
+        tokens.push(parseInt(s.slice(i,j),10)); i=j;
+      }else if('×÷*/+-'.includes(ch)){ tokens.push(ch); i++; }
+      else { i++; }
     }
-
-    function recordFromTokens(tokens, structure){
-      // 反覆嘗試直到答案為整數（避免小數干擾）
-      let ans = evalWithAddFirst(tokens);
-      let tries = 0;
-      while((!Number.isFinite(ans) || !Number.isInteger(ans)) && tries<20){
-        // 簡單回退：重新生成同結構的新數字
-        tokens = regenSameShape(tokens);
-        ans = evalWithAddFirst(tokens);
-        tries++;
-      }
-      const displayExpr = buildDisplayFromTokens(tokens);
-      return {displayExpr, tokens, answer: ans, user:null, correct:null, explain:null, structure};
+    return tokens;
+  }
+  function reduceLeftToRight(tokens, ops, title){
+    for(let i=1;i<tokens.length-1;){
+      const op=tokens[i];
+      if(ops.includes(op)){
+        const a=Number(tokens[i-1]), b=Number(tokens[i+1]);
+        let v=0;
+        if(op==='×'||op==='*') v=a*b;
+        else if(op==='÷'||op==='/'){ if(b===0) return {err:'除以 0'}; v=a/b; }
+        else if(op==='+') v=a+b;
+        else if(op==='-') v=a-b;
+        tokens.splice(i-1,3,v);
+        pushStep(title, tokens.join(' '));
+        i=Math.max(1,i-2);
+      }else i+=2;
     }
+    return {ok:true,tokens};
+  }
+  function evalFlat(s){
+    // s 無外層括號（仍可能含負號）
+    const t0=tokenize(s);
+    const rMD = reduceLeftToRight(t0, ['×','÷','*','/'], '先做乘除（左→右）'); if(rMD.err) return {value:NaN, steps:steps.concat([{title:'錯誤',expr:rMD.err}])};
+    const rAS = reduceLeftToRight(rMD.tokens, ['+','-'], '再做加減（左→右）'); if(rAS.err) return {value:NaN, steps:steps.concat([{title:'錯誤',expr:rAS.err}])};
+    return {value:Number(rAS.tokens[0]||0)};
+  }
 
-    function regenSameShape(tokens){
-      // 保持運算子不變，換數字（維持正/負傾向）
-      const newT = tokens.slice();
-      for(let i=0;i<newT.length;i+=2){
-        const old = newT[i];
-        let n = randInt(-12,12);
-        if(old!==0) n = Math.abs(n)*Math.sign(old);
-        if(i>0 && newT[i-1]==='÷' && n===0) n = choice([-3,-2,-1,1,2,3]);
-        newT[i] = n;
-      }
-      return newT;
+  // 先處理括號：() → [] → {}
+  reduceBracketType('(',')','小括號');
+  reduceBracketType('[',']','中括號');
+  reduceBracketType('{','}','大括號');
+
+  // 再處理平面
+  const finalVal = evalFlat(expr).value;
+  pushStep('完成', String(finalVal));
+  return {value:finalVal, steps};
+}
+
+/* ==== 題目產生器（保整數答案） ==== */
+function makeRecord(expr, structure, stars){
+  const {value, steps} = evalByRules(expr);
+  if(!Number.isFinite(value) || !Number.isInteger(value)) return makeRecord(genExprByStructure(structure,true), structure, stars);
+  return {expr, answer:value, steps, user:null, correct:null, structure, stars};
+}
+function nNZ(){ return choice([-12,-9,-8,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,8,9,12]); }
+function nS(){ return randInt(-9,9); }
+function wrap(type, inner){
+  if(type==='()') return `(${inner})`;
+  if(type==='[]') return `[${inner}]`;
+  if(type==='{}') return `{${inner}}`;
+  return inner;
+}
+
+function genEasy(){ // ⭐: 二元加減
+  const a=nS(), b=nS();
+  const op=choice(['+','-']);
+  const expr = `${wrap('()', showNum(a)+' '+op+' '+showNum(b))}`;
+  return makeRecord(`⭐　${expr}`, {kind:'binAS',op}, '⭐');
+}
+function genMedium(){ // ⭐⭐: 含乘除（保整數）
+  const op=choice(['×','÷']);
+  let b=nNZ(), a=nS();
+  if(op==='÷'){ a=(randInt(-8,8)||1)*b; }
+  const expr = `${wrap('()', showNum(a)+' '+op+' '+showNum(b))}`;
+  return makeRecord(`⭐⭐　${expr}`, {kind:'binMD',op}, '⭐⭐');
+}
+function genHard(){ // ⭐⭐⭐: 混合與巢狀括號
+  // 形態1： (a±b) × [c±d]
+  const a=nS(), b=nS(), c=nS(), d=nS();
+  const op1=choice(['+','-']), op2=choice(['+','-']), midOp=choice(['×','÷']);
+  let left = wrap('()', showNum(a)+' '+op1+' '+showNum(b));
+  let right;
+  if(midOp==='×'){
+    right = wrap('[]', showNum(c)+' '+op2+' '+showNum(d));
+  }else{
+    // ÷ 時讓右側為整數：設 [c±d] = k（非0）
+    const k = nNZ(); right = wrap('[]', showNum(k)+' '+op2+' '+showNum(0)); // 先放結構，再改造
+    // 為了簡單，改用 (a±b)×(c±d) 或 { (a±b) × [p] }，這裡避免太複雜的整除修補
+    right = wrap('[]', showNum(c)+' '+op2+' '+showNum(d));
+  }
+  let core = `${left} ${choice(['×','÷','+','-'])} ${right}`;
+  // 外層再包一層 {} 或不包
+  const expr = Math.random()<0.5 ? wrap('{}', core) : core;
+  return makeRecord(`⭐⭐⭐　${expr}`, {kind:'mixed'}, '⭐⭐⭐');
+}
+function genQuestion(){
+  const picker = choice(['easy','medium','hard','hard']); // 稍微提高出現混合/括號比例
+  if(picker==='easy') return genEasy();
+  if(picker==='medium') return genMedium();
+  return genHard();
+}
+
+/* 同結構類題 */
+function genExprByStructure(structure){
+  switch(structure?.kind){
+    case 'binAS': return genEasy().expr.replace(/^⭐　/,'');
+    case 'binMD': return genMedium().expr.replace(/^⭐⭐　/,'');
+    case 'mixed': return genHard().expr.replace(/^⭐⭐⭐　/,'');
+    default: return genHard().expr.replace(/^⭐⭐⭐　/,'');
+  }
+}
+function similarQuestion(struct){
+  const expr = genExprByStructure(struct);
+  const stars = (struct?.kind==='binAS')?'⭐':(struct?.kind==='binMD')?'⭐⭐':'⭐⭐⭐';
+  return makeRecord(`${stars}　${expr}`, struct, stars);
+}
+
+/* ==== 呈現 & 互動 ==== */
+function setProblem(t){ elProblem.textContent = t; }
+function setFeedback(html, good=false, show=true){
+  if(!show){ elFeedback.style.display='none'; return; }
+  elFeedback.innerHTML = html; elFeedback.style.display='block';
+  if(!good){ elFeedback.classList.add('shake'); setTimeout(()=>elFeedback.classList.remove('shake'),300); }
+}
+function pushHistory(item){ state.history.push(item); state.pointer = state.history.length-1; }
+function newQuestion(){
+  const q = genQuestion();
+  setProblem(q.expr); elAnswer.value=''; setFeedback('',false,false);
+  pushHistory(q); updateStats();
+}
+function startReview(){
+  if(state.reviewQueue.length===0){ setFeedback('目前沒有錯題可複習，先做幾題再回來吧 🌱', true, true); return; }
+  const struct = state.reviewQueue.shift();
+  const sim = similarQuestion(struct);
+  setProblem(sim.expr + '（類題）'); elAnswer.value='';
+  setFeedback('<span class="kbd">提示：先()→[]→{}，再 乘除，最後 加減（左→右）。</span>', true, true);
+  pushHistory(sim); updateStats();
+}
+
+/* ==== 計時模式 ==== */
+function startTimer(sec){
+  if(state.timer) clearInterval(state.timer);
+  state.timerMode = true; state.timeLeft = sec;
+  elTimerText.textContent = `${state.timeLeft} 秒`;
+  state.timer = setInterval(()=>{
+    state.timeLeft--;
+    elTimerText.textContent = `${state.timeLeft} 秒`;
+    if(state.timeLeft<=0){
+      clearInterval(state.timer); state.timer=null; state.timerMode=false;
+      elTimerText.textContent = '結束';
+      setFeedback(`⌛ 時間到！完成 <b>${state.history.length}</b> 題，正確 <b>${state.history.filter(h=>h.correct).length}</b> 題，得分 <b>${state.score}</b> 分。`, false, true);
     }
+  },1000);
+}
+function stopTimer(){
+  if(state.timer){ clearInterval(state.timer); state.timer=null; }
+  state.timerMode=false; elTimerText.textContent='未開始';
+}
 
-    /*****************
-     * 題目產生器     *
-     *****************/
-    function genAddSub(){
-      const a = randInt(-20,20), b = randInt(-20,20);
-      const op = choice(['+','-']);
-      return recordFromTokens([a,op,b], {kind:'bin',op,a,b,rule:'add-first'});
-    }
+/* ==== 診斷（即時建議） ==== */
+function diagnose(h, user){
+  const tips=[];
+  const e = h.expr;
+  if(/[()\[\]\{\}]/.test(e)){
+    tips.push('先處理括號層次：先小 () → 中 [] → 大 {}，每算完一層再往外。');
+  }
+  if(e.includes('×') || e.includes('÷')){
+    tips.push('括號後先做乘除（由左到右），最後才加減。');
+  }
+  // 差一點鼓勵
+  if(Number.isFinite(user) && Number.isFinite(h.answer) && Math.abs(user-h.answer)===1){
+    tips.push('只差 1！檢查最後一步加減是否抄錯或看錯符號。');
+  }
+  tips.push('小撇步：把負數寫成 (-3)，中間結果也用括號標出，能大幅降低看錯號。');
+  // 步驟化簡
+  const stepHtml = h.steps?.map((s,i)=>`<div class="step"><b>Step ${i+1}｜${s.title}</b><br><span class="kbd">${s.expr}</span></div>`).join('') || '';
+  return {tips, stepHtml};
+}
 
-    function genMulDiv(){
-      let a = randInt(-12,12), b = randInt(-12,12);
-      if(b===0) b = choice([-3,-2,-1,1,2,3]);
-      const op = choice(['×','÷']);
-      if(op==='÷'){ a = (randInt(-10,10)||1)*b; } // 讓結果多半為整數
-      return recordFromTokens([a,op,b], {kind:'bin',op,a,b,rule:'add-first'});
-    }
+/* ==== 送出 ==== */
+function submit(){
+  const h = state.history[state.pointer]; if(!h) return;
+  const raw = elAnswer.value.trim(); if(!raw){ elAnswer.focus(); return; }
+  const user = Number(raw); const ok = (user===h.answer);
+  h.user = user; h.correct = ok;
 
-    function genMixed(){
-      // 兩步運算，確保有「加減」與「乘除」共同出現，才能練到規則
-      // 模式 A: (a ± b) ×/÷ c
-      // 模式 B: a ×/÷ (b ± c)
-      const pattern = choice(['A','B']);
-      if(pattern==='A'){
-        let a = randInt(-12,12), b = randInt(-12,12), c = randInt(-12,12);
-        const op1 = choice(['+','-']); let op2 = choice(['×','÷']);
-        if(op2==='÷'){ if(c===0) c = choice([-3,-2,-1,1,2,3]); }
-        return recordFromTokens([a,op1,b,op2,c], {kind:'tri',shape:'(a±b)op c',op1,op2,a,b,c,rule:'add-first'});
-      }else{
-        let a = randInt(-12,12), b = randInt(-12,12), c = randInt(-12,12);
-        const op1 = choice(['×','÷']); let op2 = choice(['+','-']);
-        if(op1==='÷'){ if(b===0) b = choice([-3,-2,-1,1,2,3]); a = (randInt(-8,8)||1)*b; }
-        return recordFromTokens([a,op1,b,op2,c], {kind:'tri',shape:'a op (b±c)',op1,op2,a,b,c,rule:'add-first'});
-      }
-    }
+  if(ok){
+    playTone(true); state.score += SCORE_CORRECT; state.streak += 1;
+    setFeedback(`✅ <b>答對了！</b> ${h.expr} = <b>${h.answer}</b><br><span class="muted">太棒了～規則掌握正確。</span><br>${diagnose(h,user).stepHtml}`, true, true);
+  }else{
+    playTone(false); state.score -= SCORE_WRONG; state.streak = 0;
+    if(h.structure) state.reviewQueue.push(h.structure);
+    const dx = diagnose(h, user);
+    setFeedback(
+      `❌ <b>可惜！</b> 正確答案：<b>${h.answer}</b><br>
+       <div class="step"><b>題目：</b><br><span class="kbd">${h.expr}</span></div>
+       <div class="step"><b>規則提醒：</b> 先 <span class="kbd">()</span> → <span class="kbd">[]</span> → <span class="kbd">{}</span> → 乘除 → 加減（左→右）</div>
+       ${dx.stepHtml}
+       <b>給你的建議：</b><br>• ${dx.tips.join('<br>• ')}`,
+      false, true
+    );
+  }
+  updateStats();
+}
 
-    function genPrecedence(){ // 專練「先加減，後乘除」
-      // 盡量生成一定含一個加減與一個乘除
-      return genMixed();
-    }
+/* ==== 事件綁定 ==== */
+$('#btnNext').addEventListener('click', newQuestion);
+$('#btnSubmit').addEventListener('click', submit);
+$('#btnTimer60').addEventListener('click', ()=>{ stopTimer(); state.history=[]; state.pointer=-1; state.score=0; state.streak=0; updateStats(); startTimer(60); newQuestion(); elModeLabel.textContent='計時 60 秒'; });
+$('#btnTimer120').addEventListener('click', ()=>{ stopTimer(); state.history=[]; state.pointer=-1; state.score=0; state.streak=0; updateStats(); startTimer(120); newQuestion(); elModeLabel.textContent='計時 120 秒'; });
+$('#btnStopTimer').addEventListener('click', ()=>{ stopTimer(); elModeLabel.textContent='一般練習'; });
 
-    function genQuestion(){
-      if(state.mode==='addsub') return genAddSub();
-      if(state.mode==='muldiv') return genMulDiv();
-      if(state.mode==='mixed')  return genMixed();
-      if(state.mode==='preced') return genPrecedence();
-      return null;
-    }
+$('#btnReview').addEventListener('click', startReview);
+$('#btnReset').addEventListener('click', ()=>{
+  if(confirm('確定要重置統計與進度嗎？')){
+    stopTimer();
+    Object.assign(state,{history:[],pointer:-1,score:0,streak:0,reviewQueue:[]});
+    setProblem('已重置，請按「下一題」開始（會顯示 ⭐ 難度）。'); setFeedback('',false,false); updateStats();
+    elModeLabel.textContent='一般練習';
+  }
+});
+elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
 
-    /*****************
-     * 盲點診斷       *
-     *****************/
-    function diagnose(struct, correctAns, userAns){
-      const tips = [];
-      if(struct.kind==='bin'){
-        if(struct.op==='+' || struct.op==='-'){
-          tips.push('加減：同號相加保符號；異號先比大小再相減，取較大數的符號。把負數都寫成 (−3) 這種樣子更清楚。');
-        }else{
-          tips.push('乘除前，先把符號規則想清楚：同號得正、異號得負；再算數值。');
-        }
-      }else{
-        tips.push('本題規則是「先加減，後乘除」。請把要先算的加減部分用括號括起來，例如：(a + b) × c 或 a ÷ (b − c)。');
-        tips.push('步驟建議：① 先算括號裡的加減；② 再做乘除；③ 最後檢查符號。');
-      }
-      if(Number.isFinite(userAns) && Number.isFinite(correctAns) && Math.abs(userAns - correctAns)===1){
-        tips.push('你的答案只差 1，可能是最後一步抄寫或加減時的小失誤，重算最後兩步。');
-      }
-      tips.push('小撇步：所有負數與中間結果都用括號（如 (−4)、((−4)+7)），能大幅降低看錯號。');
-      return tips;
-    }
-
-    /*****************
-     * 類題產生       *
-     *****************/
-    function similarQuestion(struct){
-      // 依原結構出新數字
-      if(struct.kind==='bin'){
-        let a = randInt(-12,12), b = randInt(-12,12);
-        if(struct.op==='÷'){ if(b===0) b = choice([-3,-2,-1,1,2,3]); a = (randInt(-8,8)||1)*b; }
-        return recordFromTokens([a,struct.op,b], struct);
-      }
-      if(struct.kind==='tri'){
-        if(struct.shape==='(a±b)op c'){
-          let a = randInt(-12,12), b = randInt(-12,12), c = randInt(-12,12);
-          if(struct.op2==='÷'){ if(c===0) c = choice([-3,-2,-1,1,2,3]); }
-          return recordFromTokens([a,struct.op1,b,struct.op2,c], struct);
-        }else{ // a op (b±c)
-          let a = randInt(-12,12), b = randInt(-12,12), c = randInt(-12,12);
-          if(struct.op1==='÷'){ if(b===0) b = choice([-3,-2,-1,1,2,3]); a = (randInt(-8,8)||1)*b; }
-          return recordFromTokens([a,struct.op1,b,struct.op2,c], struct);
-        }
-      }
-      // fallback
-      const q = genQuestion();
-      return q;
-    }
-
-    /*****************
-     * 呈現與互動     *
-     *****************/
-    function setProblem(text){ elProblem.textContent = text; }
-    function setFeedback(html, good=false, show=true){
-      if(!show){ elFeedback.style.display='none'; return; }
-      elFeedback.innerHTML = html; elFeedback.style.display = 'block';
-      if(!good){ elFeedback.classList.add('shake'); setTimeout(()=>elFeedback.classList.remove('shake'),300); }
-    }
-    function pushHistory(item){ state.history.push(item); state.pointer = state.history.length-1; }
-    function showCurrent(){
-      const h = state.history[state.pointer]; if(!h) return;
-      setProblem(h.displayExpr); elAnswer.value=''; setFeedback('',false,false);
-      elBtnPrev.disabled = (state.pointer<=0); elBtnNext.disabled = (state.pointer>=state.history.length-1);
-    }
-    function newQuestion(){
-      if(!state.mode) return;
-      const q = genQuestion();
-      setProblem(q.displayExpr); elAnswer.value=''; setFeedback('',false,false);
-      pushHistory(q); elBtnPrev.disabled = (state.pointer<=0); elBtnNext.disabled = true; updateStats();
-    }
-    function startReview(){
-      if(state.reviewQueue.length===0){ setFeedback('目前沒有錯題可以複習，先做幾題再回來吧 🌱', true, true); return; }
-      const struct = state.reviewQueue.shift();
-      const sim = similarQuestion(struct);
-      setProblem(sim.displayExpr + '（類題）'); elAnswer.value='';
-      setFeedback('<span class="hint">這題依你的錯誤類型出「類題」。先按規則把要先算的加減圈起來再算！</span>', true, true);
-      pushHistory(sim); updateStats(); elBtnPrev.disabled=(state.pointer<=0); elBtnNext.disabled=true;
-    }
-
-    function submit(){
-      const h = state.history[state.pointer]; if(!h) return;
-      const raw = elAnswer.value.trim(); if(!raw){ elAnswer.focus(); return; }
-      const user = Number(raw); const correct = (user===h.answer);
-      h.user = user; h.correct = correct;
-
-      if(correct){
-        playTone(true); state.score += SCORE_CORRECT; state.streak += 1;
-        setFeedback(`✅ <b>答對了！</b> ${h.displayExpr} = <b>${h.answer}</b><br><span class="muted">太棒了～繼續保持！</span>`, true, true);
-      }else{
-        playTone(false); state.score -= SCORE_WRONG; state.streak = 0;
-        const tips = diagnose(h.structure||{kind:'tri'}, h.answer, user); h.explain = tips.join('<br>');
-        if(h.structure) state.reviewQueue.push(h.structure);
-        setFeedback(`❌ <b>可惜！</b> 正確答案是 <b>${h.answer}</b><br><br><b>盲點診斷：</b><br>${tips.map(t=>'• '+t).join('<br>')}<br><br><span class="hint">👉 點「開始錯題複習」出同結構類題！</span>`, false, true);
-      }
-      elBtnNext.disabled = false; updateStats();
-    }
-
-    /*****************
-     * 事件綁定       *
-     *****************/
-    // 模式按鈕
-    (function buildModeButtons(){
-      Modes.forEach(m=>{
-        const b=document.createElement('button'); b.className='mode-btn'; b.textContent=m.label;
-        b.addEventListener('click',()=>{
-          document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
-          b.classList.add('active'); state.mode=m.id; state.streak=0;
-          setFeedback('已切換模式，開始新一題吧！', true, true); newQuestion(); updateStats();
-        });
-        elModes.appendChild(b);
-      });
-    })();
-
-    // 數字鍵盤（含負號）
-    (function buildKeypad(){
-      ['7','8','9','⌫','4','5','6','清除','1','2','3','−','0','00','±','送出'].forEach(k=>{
-        const btn=document.createElement('button'); btn.className='key'+(k==='送出'?' primary':''); btn.textContent=k;
-        btn.addEventListener('click',()=>{
-          if(k==='送出') return submit();
-          if(k==='清除'){ elAnswer.value=''; return; }
-          if(k==='⌫'){ elAnswer.value = elAnswer.value.slice(0,-1); return; }
-          if(k==='−'){ if(!elAnswer.value.startsWith('-')) elAnswer.value='-'+elAnswer.value; return; }
-          if(k==='±'){ elAnswer.value = elAnswer.value.startsWith('-') ? elAnswer.value.slice(1) : (elAnswer.value?('-'+elAnswer.value):'-'); return; }
-          elAnswer.value += k;
-        });
-        elKeypad.appendChild(btn);
-      });
-    })();
-
-    elBtnSubmit.addEventListener('click', submit);
-    elBtnSkip.addEventListener('click', newQuestion);
-    elBtnPrev.addEventListener('click', ()=>{ if(state.pointer>0){ state.pointer--; showCurrent(); } });
-    elBtnNext.addEventListener('click', ()=>{ if(state.pointer<state.history.length-1){ state.pointer++; showCurrent(); } else { newQuestion(); } });
-    elBtnReset.addEventListener('click', ()=>{
-      if(confirm('確定要重置統計與進度嗎？')){
-        state.history=[]; state.pointer=-1; state.score=0; state.streak=0; state.reviewQueue=[];
-        setProblem('已重置，請選擇主題或按「下一題」開始。'); setFeedback('',false,false); updateStats();
-        elBtnPrev.disabled=true; elBtnNext.disabled=true;
-      }
+/* ==== 數字鍵盤（行動裝置友善） ==== */
+(function buildKeypad(){
+  const keys=['7','8','9','⌫','4','5','6','清除','1','2','3','−','0','00','±','送出'];
+  const pad = $('#keypad');
+  keys.forEach(k=>{
+    const b=document.createElement('button'); b.className='key'+(k==='送出'?' primary':''); b.textContent=k;
+    b.addEventListener('click',()=>{
+      if(k==='送出') return submit();
+      if(k==='清除'){ elAnswer.value=''; return; }
+      if(k==='⌫'){ elAnswer.value = elAnswer.value.slice(0,-1); return; }
+      if(k==='−'){ if(!elAnswer.value.startsWith('-')) elAnswer.value='-'+elAnswer.value; return; }
+      if(k==='±'){ elAnswer.value = elAnswer.value.startsWith('-')? elAnswer.value.slice(1) : (elAnswer.value?('-'+elAnswer.value):'-'); return; }
+      elAnswer.value += k;
     });
-    elBtnReview.addEventListener('click', startReview);
-    elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
+    pad.appendChild(b);
+  });
+})();
 
-    // 初始化提示
-    if(!state.mode){
-      setFeedback('請先在左側選擇一個練習主題（例如「③ 四則混合」或「④ 先加減，後乘除」），再開始作答。', true, true);
-    }
-  </script>
+/* ==== 初始化 ==== */
+setFeedback('請閱讀上方「四則運算原則」，然後按「下一題」開始。', true, true);
+updateStats();
+</script>
 </body>
 </html>
