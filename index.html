@@ -13,50 +13,70 @@
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:ui-rounded,system-ui,-apple-system,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);background:linear-gradient(#fff,var(--bg))}
-header{position:sticky;top:0;z-index:10;background:linear-gradient(#fff,var(--bg));box-shadow:0 4px 16px rgba(0,0,0,.05);padding:10px 12px 6px}
-.wrap{max-width:980px;margin:0 auto;padding:14px}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(#fff,var(--bg));box-shadow:0 4px 16px rgba(0,0,0,.05);padding:8px 12px}
+.wrap{max-width:980px;margin:0 auto;padding:12px}
 .brand{display:flex;gap:10px;align-items:center}
-.logo{width:42px;height:42px;border-radius:12px;background:var(--pri2);display:grid;place-items:center;box-shadow:var(--shadow);font-size:22px}
-.brand h1{margin:0;font-size:18px}
-.brand p{margin:0;color:var(--muted);font-size:13px}
-.principles{margin-top:10px;padding:12px;border-left:6px solid var(--pri);background:#fff;border-radius:14px;box-shadow:var(--shadow)}
-.principles h2{margin:0 0 8px;font-size:16px}
-.principles ol{margin:0;padding-left:20px}
-.pill{display:inline-block;margin:6px 8px 0 0;padding:4px 10px;border-radius:999px;background:#ffe5ef;font-size:12px}
-.bar{width:100%;height:10px;background:#f0f0f0;border-radius:999px;overflow:hidden;margin-top:10px}
+.logo{width:38px;height:38px;border-radius:12px;background:var(--pri2);display:grid;place-items:center;box-shadow:var(--shadow);font-size:20px}
+.brand h1{margin:0;font-size:17px}
+.brand p{margin:0;color:var(--muted);font-size:12px}
+
+/* ✅ 迷你規則條：縮小且固定，不佔高 */
+.rule-strip{
+  position:sticky; top:56px; z-index:19;
+  display:flex; gap:10px; align-items:center; overflow:auto;
+  background:#fff; border:1px solid #f1f1f1; border-left:6px solid var(--pri);
+  border-radius:12px; padding:6px 10px; box-shadow:var(--shadow); margin-top:8px;
+  font-size:12px; white-space:nowrap;
+}
+.rule-chip{background:#ffe5ef; padding:3px 8px; border-radius:999px; font-size:12px}
+.rule-btn{border:none;background:#fff;padding:4px 8px;border-radius:999px;box-shadow:var(--shadow);cursor:pointer;font-size:12px}
+
+/* 規則詳情（浮出層） */
+.rule-modal{
+  position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:50;
+  background:rgba(0,0,0,.2);
+}
+.rule-modal .panel{
+  background:#fff; border-radius:16px; box-shadow:var(--shadow); padding:16px; width:min(640px,92vw);
+}
+.rule-modal h2{margin:0 0 6px; font-size:16px}
+.rule-modal ol{margin:0 0 8px 18px}
+.rule-modal .close{margin-top:8px}
+
+.bar{width:100%;height:10px;background:#f0f0f0;border-radius:999px;overflow:hidden;margin-top:8px}
 .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--pri),#ffa1c5);transition:width .35s;border-radius:999px}
-.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;color:#444;font-size:13px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;color:#444;font-size:12px}
 .chip{background:#fff;padding:6px 10px;border-radius:999px;box-shadow:var(--shadow)}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#fff;box-shadow:var(--shadow)}
 .timer{font-weight:700;color:#c62828}
 
-.grid{display:grid;gap:14px;grid-template-columns:1fr;margin-top:14px}
+.grid{display:grid;gap:12px;grid-template-columns:1fr;margin-top:10px}
 @media(min-width:900px){.grid{grid-template-columns:280px 1fr}}
 
-.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:14px}
-.section-title{margin:0 0 8px;font-size:16px;font-weight:700}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:12px}
+.section-title{margin:0 0 8px;font-size:15px;font-weight:700}
 
 .modes{display:flex;flex-wrap:wrap;gap:8px}
-.mode-btn{border:none;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
+.mode-btn{border:none;border-radius:12px;padding:8px 10px;background:#fff;box-shadow:var(--shadow);font-size:13px;cursor:pointer}
 .mode-btn.active{background:var(--pri);color:#fff}
 
-.problem{font-size:26px;font-weight:800;letter-spacing:.5px;padding:12px 14px;border-radius:14px;background:linear-gradient(180deg,#fff,#fff2f6);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;min-height:72px;word-break:break-word}
-.answer-area{display:grid;grid-template-columns:1fr;gap:10px}
-.answer-input{width:100%;font-size:20px;padding:12px 14px;border-radius:12px;border:2px solid #eee;outline:none}
+.problem{font-size:24px;font-weight:800;letter-spacing:.5px;padding:10px 12px;border-radius:14px;background:linear-gradient(180deg,#fff,#fff2f6);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;min-height:68px;word-break:break-word}
+.answer-area{display:grid;grid-template-columns:1fr;gap:8px}
+.answer-input{width:100%;font-size:19px;padding:10px 12px;border-radius:12px;border:2px solid #eee;outline:none}
 .answer-input:focus{border-color:var(--pri)}
-.keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.key{padding:12px 10px;border:none;border-radius:12px;background:#fff;box-shadow:var(--shadow);font-size:18px;cursor:pointer}
+.keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.key{padding:10px 8px;border:none;border-radius:12px;background:#fff;box-shadow:var(--shadow);font-size:18px;cursor:pointer}
 .key.primary{background:var(--pri);color:#fff}
 .controls{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:none;border-radius:12px;padding:10px 12px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
+.btn{border:none;border-radius:12px;padding:8px 10px;background:#fff;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
 .btn.primary{background:var(--pri);color:#fff}
-.feedback{border-left:6px solid var(--pri);background:#fff;padding:10px 12px;border-radius:12px;box-shadow:var(--shadow);line-height:1.6;font-size:15px}
+.feedback{border-left:6px solid var(--pri);background:#fff;padding:10px;border-radius:12px;box-shadow:var(--shadow);line-height:1.6;font-size:14px}
 .step{padding:6px 10px;background:#fafafa;border-radius:10px;margin:6px 0;border:1px dashed #eee}
 .kbd{font-family:ui-monospace,Consolas,Menlo,monospace;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:6px;padding:0 6px}
 .muted{color:var(--muted);font-size:12px}
 .shake{animation:shake .3s linear}
 @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-3px)}50%{transform:translateX(3px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
-.footer{text-align:center;color:var(--muted);padding:16px 0 40px;font-size:12px}
+.footer{text-align:center;color:var(--muted);padding:14px 0 36px;font-size:12px}
 </style>
 </head>
 <body>
@@ -70,18 +90,14 @@ header{position:sticky;top:0;z-index:10;background:linear-gradient(#fff,var(--bg
       </div>
     </div>
 
-    <!-- 原則提示 -->
-    <div class="principles">
-      <h2>四則運算原則（請牢記）</h2>
-      <ol>
-        <li><b>先算括號</b>：先 <span class="kbd">()</span> 再 <span class="kbd">[]</span>，由內向外。</li>
-        <li>括號處理完後，<b>先乘除</b>（左 → 右）。</li>
-        <li>最後做 <b>加減</b>（左 → 右）。</li>
-      </ol>
-      <span class="pill">把負數寫成 <span class="kbd">(-3)</span> 比較不會看錯號</span>
-      <span class="pill">每化簡一步，寫一行，避免同時做很多事</span>
+    <!-- ✅ 迷你規則條（固定且精簡） -->
+    <div class="rule-strip">
+      <span class="rule-chip">先 <span class="kbd">()</span> → 再 <span class="kbd">[]</span>（由內向外）</span>
+      <span class="rule-chip">括號後：<b>乘除</b> → <b>加減</b>（左→右）</span>
+      <button id="btnRuleMore" class="rule-btn">詳</button>
     </div>
 
+    <!-- 進度與統計 -->
     <div class="bar" aria-label="progress"><div id="progressFill" class="fill"></div></div>
     <div class="stats">
       <span class="chip">題數：<b id="qCount">0</b></span>
@@ -95,28 +111,38 @@ header{position:sticky;top:0;z-index:10;background:linear-gradient(#fff,var(--bg
   </div>
 </header>
 
+<!-- 規則詳情（浮出） -->
+<div id="ruleModal" class="rule-modal">
+  <div class="panel">
+    <h2>四則運算原則（完整）</h2>
+    <ol>
+      <li><b>先算括號</b>：先 <span class="kbd">()</span> 再 <span class="kbd">[]</span>，由內向外。</li>
+      <li>括號處理完後，<b>先乘除</b>（左 → 右）。</li>
+      <li>最後做 <b>加減</b>（左 → 右）。</li>
+    </ol>
+    <div class="muted">小技巧：把負數寫成 <span class="kbd">(-3)</span>；每化簡一步寫一行，避免同時做太多事。</div>
+    <div style="text-align:right"><button id="btnRuleClose" class="btn close">關閉</button></div>
+  </div>
+</div>
+
 <main class="wrap grid">
   <!-- 左：主題與控制 -->
   <section class="card">
     <h2 class="section-title">練習主題</h2>
     <div id="modes" class="modes"></div>
-    <hr style="border:none;height:1px;background:#f2f2f2;margin:14px 0;">
+    <hr style="border:none;height:1px;background:#f2f2f2;margin:10px 0;">
     <h2 class="section-title">控制與設定</h2>
-    <div class="controls" style="margin-bottom:8px">
-      <button class="btn" id="btnPrev" disabled>上一題</button>
-      <button class="btn" id="btnNext" disabled>下一題</button>
-      <button class="btn primary" id="btnSubmit">送出</button>
-    </div>
-    <div class="controls">
+    <div class="controls" style="margin-bottom:6px">
+      <button class="btn" id="btnPrev" disabled>上一題（檢視）</button>
       <button class="btn" id="btnTimer60">開始計時挑戰（60秒）</button>
       <button class="btn" id="btnTimer120">開始計時挑戰（120秒）</button>
       <button class="btn" id="btnStopTimer">停止計時</button>
     </div>
-    <div class="controls" style="margin-top:8px">
+    <div class="controls">
       <button class="btn" id="btnReview">開始錯題複習</button>
       <button class="btn" id="btnReset">重置統計</button>
     </div>
-    <p class="muted" style="margin-top:6px">配分：答對 +10、答錯 −5；計時模式時間到會自動結算。</p>
+    <p class="muted" style="margin-top:4px">配分：答對 +10、答錯 −5；計時模式結束後將鎖住出題，只供回顧與複習。</p>
   </section>
 
   <!-- 右：作答 -->
@@ -124,6 +150,11 @@ header{position:sticky;top:0;z-index:10;background:linear-gradient(#fff,var(--bg
     <div class="problem" id="problem">請在左側選擇主題後按「下一題」開始</div>
     <div class="answer-area">
       <input id="answer" class="answer-input" inputmode="numeric" placeholder="輸入答案後按「送出」或 Enter"/>
+      <!-- ✅ 把「下一題」也擺進作答區（常用操作就在這裡） -->
+      <div class="controls">
+        <button class="btn primary" id="btnSubmit">送出</button>
+        <button class="btn" id="btnNext" disabled>下一題</button>
+      </div>
       <div class="keypad" id="keypad"></div>
       <div id="feedback" class="feedback" style="display:none"></div>
     </div>
@@ -141,10 +172,10 @@ const PROGRESS_TARGET = 20;
 /* ==== 狀態 ==== */
 const state = {
   mode:null,
-  history:[], // {displayExpr, rawExpr, answer, steps, user, correct, structure}
+  history:[], // {displayExpr, rawExpr, answer, steps, user, correct, structure, dx?}
   pointer:-1,
   score:0, streak:0,
-  timerMode:false, timeLeft:0, timer:null,
+  timerMode:false, timeLeft:0, timer:null, locked:false, // ✅ locked: 計時結束後鎖題
   reviewQueue:[],
 };
 
@@ -178,9 +209,9 @@ function updateStats(){
   elQCount.textContent = total; elQCorrect.textContent = correct; elQRate.textContent = rate+'%';
   elScore.textContent = state.score; elStreak.textContent = state.streak;
   elProgressFill.style.width = Math.min(100, Math.round((total/PROGRESS_TARGET)*100))+'%';
-  localStorage.setItem('int_arith_clean_v1', JSON.stringify(state,(k,v)=>k==='history'?v.slice(-200):v));
+  localStorage.setItem('int_arith_clean_v2', JSON.stringify(state,(k,v)=>k==='history'?v.slice(-200):v));
 }
-(function load(){ try{const s=JSON.parse(localStorage.getItem('int_arith_clean_v1')||'null'); if(s){Object.assign(state,s); updateStats(); if(state.mode){elModeLabel.textContent=Modes.find(m=>m.id===state.mode)?.label||'—'; elBtnNext.disabled=false;}} }catch(e){} })();
+(function load(){ try{const s=JSON.parse(localStorage.getItem('int_arith_clean_v2')||'null'); if(s){Object.assign(state,s); updateStats(); if(state.mode){elModeLabel.textContent=Modes.find(m=>m.id===state.mode)?.label||'—'; elBtnNext.disabled=false;} if(state.locked) applyLockUI();} }catch(e){} })();
 
 /* ==== 模式 ==== */
 const Modes = [
@@ -194,6 +225,7 @@ const Modes = [
     const b=document.createElement('button');
     b.className='mode-btn'; b.textContent=m.label;
     b.addEventListener('click',()=>{
+      if(state.locked){ alert('計時回顧中，請先停止計時或重置統計。'); return; }
       document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
       b.classList.add('active'); state.mode=m.id; state.streak=0; elModeLabel.textContent=m.label;
       setFeedback('已切換主題，按「下一題」開始。', true, true); elBtnNext.disabled=false;
@@ -285,18 +317,15 @@ function makeRecord(displayExpr, rawExpr, structure){
   }
   return {displayExpr, rawExpr, answer:value, steps, user:null, correct:null, structure};
 }
+function wrapParen(type, inner){ return type==='()' ? `(${inner})` : `[${inner}]`; }
 
-function wrapParen(type, inner){
-  return type==='()' ? `(${inner})` : `[${inner}]`;
-}
 function genAddSub(){
   const a = randInt(-20,20), b = randInt(-20,20);
   const op = choice(['+','-']);
-  const show = `${fmtNum(a)} ${op} ${fmtNum(b)}`;
-  // 偶爾加一層括號
   const type = Math.random()<0.4 ? choice(['()','[]']) : null;
   const rawExpr = type ? wrapParen(type, `${a}${op}${b}`) : `${a}${op}${b}`;
-  return makeRecord(type? `${type==='()'?'(': '['}${fmtNum(a)} ${op} ${fmtNum(b)}${type==='()'?')':']'}` : show, rawExpr, {kind:'binAS',op});
+  const display = type? `${type==='()'?'(':'['}${fmtNum(a)} ${op} ${fmtNum(b)}${type==='()'?')':']'}` : `${fmtNum(a)} ${op} ${fmtNum(b)}`;
+  return makeRecord(display, rawExpr, {kind:'binAS',op});
 }
 function genMulDiv(){
   let b = choice([-12,-9,-8,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,8,9,12]);
@@ -310,7 +339,6 @@ function genMulDiv(){
   return makeRecord(display, rawExpr, {kind:'binMD',op});
 }
 function genMixed(){
-  // 兩步運算，含括號群組： (a ± b) ×/÷ c   或   a ×/÷ (b ± c)   或   (a ± b) ± c
   const pattern = choice(['A','B','C']);
   if(pattern==='A'){
     const a=randInt(-10,10), b=randInt(-10,10), c=randInt(-10,10)||1;
@@ -324,12 +352,13 @@ function genMixed(){
     const a=randInt(-10,10), b=randInt(-10,10), c=randInt(-10,10)||1;
     const op1=choice(['×','÷']), op2=choice(['+','-']);
     const pType = choice(['()','[]']);
+    if(op1==='÷'){ if(c===0) c=1; } // 簡化
     const rightRaw = wrapParen(pType, `${b}${op2}${c}`);
-    const baseA = (op1==='÷') ? (randInt(-8,8)||1)*(b+c) : a; // 粗略整數化
+    const baseA = (op1==='÷') ? (randInt(-8,8)||1)*(b+(op2==='+'?c:-c)) : a; // 近似整數
     const rawExpr = `${baseA}${op1}${rightRaw}`;
     const display = `${fmtNum(baseA)} ${op1} ${pType==='()'?'(':'['}${fmtNum(b)} ${op2} ${fmtNum(c)}${pType==='()'?')':']'}`;
     return makeRecord(display, rawExpr, {kind:'tri','shape':'a op (b±c)',op1,op2});
-  }else{ // C
+  }else{
     const a=randInt(-10,10), b=randInt(-10,10), c=randInt(-10,10);
     const op1=choice(['+','-']), op2=choice(['+','-']);
     const pType = choice(['()','[]']);
@@ -340,7 +369,6 @@ function genMixed(){
   }
 }
 function genPrecedence(){
-  // 固定型： a ± (b ×/÷ c)   或   (a ×/÷ b) ± c
   const variant = choice(['innerMD','leftMD']);
   if(variant==='innerMD'){
     let a=randInt(-12,12), b=randInt(-9,9), c=randInt(-9,9)||1;
@@ -372,15 +400,10 @@ function genQuestion(){
 
 /* ==== 類題（同結構） ==== */
 function similarQuestion(struct){
-  // 重新依結構生成
   if(!struct) return genQuestion();
   if(struct.kind==='binAS') return genAddSub();
   if(struct.kind==='binMD') return genMulDiv();
-  if(struct.kind==='tri'){
-    if(struct.shape==='(a±b)op c'){ return genMixed(); }
-    if(struct.shape==='a op (b±c)'){ return genMixed(); }
-    return genMixed();
-  }
+  if(struct.kind==='tri') return genMixed();
   if(struct.kind==='preced') return genPrecedence();
   return genQuestion();
 }
@@ -388,7 +411,7 @@ function similarQuestion(struct){
 /* ==== 呈現與互動 ==== */
 function setProblem(text){ elProblem.textContent = text; }
 function setFeedback(html, good=false, show=true){
-  if(!show){ elFeedback.style.display='none'; return; }
+  if(show===false){ elFeedback.style.display='none'; return; }
   elFeedback.innerHTML = html; elFeedback.style.display='block';
   if(!good){ elFeedback.classList.add('shake'); setTimeout(()=>elFeedback.classList.remove('shake'),300); }
 }
@@ -396,21 +419,17 @@ function pushHistory(item){ state.history.push(item); state.pointer = state.hist
 function showCurrent(){
   const h = state.history[state.pointer]; if(!h) return;
   setProblem(h.displayExpr); elAnswer.value=''; setFeedback('',false,false);
-  elBtnPrev.disabled = (state.pointer<=0); elBtnNext.disabled = (state.pointer>=state.history.length-1);
+  elBtnPrev.disabled = (state.pointer<=0);
+  // 檢視模式下，Next 只是瀏覽
+  if(state.locked){ elBtnNext.textContent='下一題（檢視）'; elBtnNext.disabled = (state.pointer>=state.history.length-1); }
+  else{ elBtnNext.textContent='下一題'; elBtnNext.disabled = (state.pointer>=state.history.length-1); }
 }
 function newQuestion(){
+  if(state.locked){ setFeedback('⏱ 計時已結束：目前為「回顧模式」，不可出新題。', true, true); return; }
   if(!state.mode){ setFeedback('請先選擇左側主題。', true, true); return; }
   const q = genQuestion();
   setProblem(q.displayExpr); elAnswer.value=''; setFeedback('',false,false);
   pushHistory(q); elBtnPrev.disabled=(state.pointer<=0); elBtnNext.disabled=true; updateStats();
-}
-function startReview(){
-  if(state.reviewQueue.length===0){ setFeedback('目前沒有錯題可複習，先做幾題再回來吧 🌱', true, true); return; }
-  const struct = state.reviewQueue.shift();
-  const sim = similarQuestion(struct);
-  setProblem(sim.displayExpr + '（類題）'); elAnswer.value='';
-  setFeedback('<span class="kbd">提示：先 () → []，再 乘除，最後 加減（左→右）。</span>', true, true);
-  pushHistory(sim); updateStats(); elBtnPrev.disabled=(state.pointer<=0); elBtnNext.disabled=true;
 }
 
 /* ==== 診斷（盲點 + 建議） ==== */
@@ -419,7 +438,7 @@ function diagnose(h, user){
   const e = h.displayExpr;
   if(/[()\[\]]/.test(e)) tips.push('先處理括號層次：先 () 再 []，每算完一層再往外。');
   if(e.includes('×')||e.includes('÷')) tips.push('括號後先做乘除（從左到右），最後才加減。');
-  if(/-\s*\(/.test(h.rawExpr)||/-\[/.test(h.rawExpr)) tips.push('看清「減負數」：a − (−b) 其實等於 a + b。');
+  if(/-\s*\(/.test(h.rawExpr)||/-\[/.test(h.rawExpr)) tips.push('看清「減負數」：a − (−b) 等於 a + b。');
   if(Number.isFinite(user) && Number.isFinite(h.answer) && Math.abs(user-h.answer)===1) tips.push('只差 1！檢查最後一步是否抄錯或看錯號。');
   tips.push('把負數與中間結果都用小括號標出（例如 (-4)），能降低看錯符號。');
 
@@ -427,9 +446,10 @@ function diagnose(h, user){
   return {tips, stepHtml};
 }
 
-/* ==== 計時模式 ==== */
+/* ==== 計時模式（時間到鎖住出題與作答） ==== */
 function startTimer(sec){
   if(state.timer) clearInterval(state.timer);
+  state.locked = false; applyLockUI(); // 先解鎖（開始新計時）
   state.timerMode = true; state.timeLeft = sec;
   elTimerText.textContent = `${state.timeLeft} 秒`;
   state.timer = setInterval(()=>{
@@ -438,14 +458,68 @@ function startTimer(sec){
     if(state.timeLeft<=0){
       clearInterval(state.timer); state.timer=null; state.timerMode=false;
       elTimerText.textContent = '結束';
-      setFeedback(`⌛ 時間到！完成 <b>${state.history.length}</b> 題，正確 <b>${state.history.filter(h=>h.correct).length}</b> 題，得分 <b>${state.score}</b> 分。`, false, true);
+      lockForReview(); // ✅ 時間到 → 鎖住並給總結
     }
   },1000);
 }
 function stopTimer(){ if(state.timer){clearInterval(state.timer); state.timer=null;} state.timerMode=false; elTimerText.textContent='未開始'; }
 
+/* 鎖住（回顧模式） */
+function lockForReview(){
+  state.locked = true;
+  applyLockUI();
+  showSessionSummary();
+}
+function applyLockUI(){
+  const disabled = state.locked;
+  elAnswer.disabled = disabled;
+  // 鍵盤
+  elKeypad.querySelectorAll('button').forEach(b=>b.disabled = disabled);
+  // 出新題與送出
+  elBtnSubmit.disabled = disabled;
+  // 下一題：鎖住時改為「檢視」模式（只在紀錄中移動）
+  if(disabled){
+    elBtnNext.textContent = '下一題（檢視）';
+    elBtnNext.disabled = (state.pointer>=state.history.length-1);
+  }else{
+    elBtnNext.textContent = '下一題';
+  }
+}
+
+/* 總結回饋（時間到後顯示） */
+function showSessionSummary(){
+  const total = state.history.length;
+  const correct = state.history.filter(h=>h.correct).length;
+  const acc = total? Math.round(correct*100/total):0;
+  // 粗略統計盲點
+  let missParen=0, missSign=0, mdOrder=0, nearMiss=0;
+  state.history.forEach(h=>{
+    if(h.correct) return;
+    const e = h.displayExpr || '';
+    if(/[()\[\]]/.test(e)) missParen++;
+    if(/-\s*\(/.test(h.rawExpr)||/-\[/.test(h.rawExpr)) missSign++;
+    if(e.includes('×')||e.includes('÷')) mdOrder++;
+    if(Number.isFinite(h.user) && Number.isFinite(h.answer) && Math.abs(h.user-h.answer)===1) nearMiss++;
+  });
+  const suggest = [];
+  if(missParen>0) suggest.push('先圈出要計算的括號層次（先 () 再 []），算完一層再往外。');
+  if(mdOrder>0) suggest.push('括號後請先做乘除，再做加減，且同層從左到右。');
+  if(missSign>0) suggest.push('把「減負數」改寫成加法：a − (−b) = a + b，並把負數寫成 (-3)。');
+  if(nearMiss>0) suggest.push('最後一步放慢速度，檢查抄寫與正負號。');
+  if(suggest.length===0) suggest.push('表現很穩定！可以提高難度或縮短時間挑戰。');
+
+  setFeedback(
+    `⌛ <b>計時結束・回顧模式</b><br>
+     完成 <b>${total}</b> 題｜正確 <b>${correct}</b> 題｜正確率 <b>${acc}%</b>｜得分 <b>${state.score}</b><br><br>
+     <b>給你的統整建議：</b><br>• ${suggest.join('<br>• ')}<br><br>
+     <span class="muted">現在可用「上一題（檢視）」與「下一題（檢視）」回顧每一題；要重新挑戰請按「停止計時」或「重置統計」。</span>`,
+    true, true
+  );
+}
+
 /* ==== 送出 ==== */
 function submit(){
+  if(state.locked){ setFeedback('⏱ 計時已結束：目前為回顧模式，無法作答。', true, true); return; }
   const h = state.history[state.pointer]; if(!h) return;
   const raw = elAnswer.value.trim(); if(!raw){ elAnswer.focus(); return; }
   const user = Number(raw); const ok = (user===h.answer);
@@ -453,11 +527,11 @@ function submit(){
 
   if(ok){
     playTone(true); state.score += SCORE_CORRECT; state.streak += 1;
-    setFeedback(`✅ <b>答對了！</b> ${h.displayExpr} = <b>${h.answer}</b><br><span class="muted">太棒了～規則掌握正確。</span><br>${diagnose(h,user).stepHtml}`, true, true);
+    setFeedback(`✅ <b>答對了！</b> ${h.displayExpr} = <b>${h.answer}</b><br><span class="muted">太棒了～規則掌握正確。</span>`, true, true);
   }else{
     playTone(false); state.score -= SCORE_WRONG; state.streak = 0;
+    const dx = diagnose(h, user); h.dx = dx;
     if(h.structure) state.reviewQueue.push(h.structure);
-    const dx = diagnose(h, user);
     setFeedback(
       `❌ <b>可惜！</b> 正確答案：<b>${h.answer}</b><br>
        <div class="step"><b>題目：</b><br><span class="kbd">${h.displayExpr}</span></div>
@@ -472,21 +546,40 @@ function submit(){
 }
 
 /* ==== 綁定 ==== */
-elBtnPrev.addEventListener('click', ()=>{ if(state.pointer>0){ state.pointer--; showCurrent(); } });
-elBtnNext.addEventListener('click', ()=>{ if(state.pointer<state.history.length-1){ state.pointer++; showCurrent(); } else { newQuestion(); } });
-elBtnSubmit.addEventListener('click', submit);
-elBtnTimer60.addEventListener('click', ()=>{ stopTimer(); resetSessionStats(); startTimer(60); if(!state.mode){state.mode='mixed'; elModeLabel.textContent=Modes.find(m=>m.id==='mixed').label;} newQuestion(); });
-elBtnTimer120.addEventListener('click', ()=>{ stopTimer(); resetSessionStats(); startTimer(120); if(!state.mode){state.mode='mixed'; elModeLabel.textContent=Modes.find(m=>m.id==='mixed').label;} newQuestion(); });
-elBtnStopTimer.addEventListener('click', ()=>{ stopTimer(); });
-elBtnReview.addEventListener('click', startReview);
-elBtnReset.addEventListener('click', ()=>{
+$('#btnRuleMore').addEventListener('click', ()=>{ $('#ruleModal').style.display='flex'; });
+$('#btnRuleClose').addEventListener('click', ()=>{ $('#ruleModal').style.display='none'; });
+
+$('#btnPrev').addEventListener('click', ()=>{ if(state.pointer>0){ state.pointer--; showCurrent(); } });
+$('#btnNext').addEventListener('click', ()=>{
+  if(state.locked){
+    if(state.pointer < state.history.length-1){ state.pointer++; showCurrent(); }
+    else{ setFeedback('已到最後一題紀錄。', true, true); }
+  }else{
+    if(state.pointer < state.history.length-1){ state.pointer++; showCurrent(); }
+    else { newQuestion(); }
+  }
+});
+$('#btnSubmit').addEventListener('click', submit);
+
+$('#btnTimer60').addEventListener('click', ()=>{ stopTimer(); resetSessionStats(); startTimer(60); ensureMode(); newQuestion(); });
+$('#btnTimer120').addEventListener('click', ()=>{ stopTimer(); resetSessionStats(); startTimer(120); ensureMode(); newQuestion(); });
+$('#btnStopTimer').addEventListener('click', ()=>{ stopTimer(); state.locked=false; applyLockUI(); setFeedback('已停止計時，可繼續出題與作答。', true, true); });
+
+$('#btnReview').addEventListener('click', ()=>{
+  if(state.reviewQueue.length===0){ setFeedback('目前沒有錯題可複習，先做幾題再回來吧 🌱', true, true); return; }
+  if(state.locked){ setFeedback('回顧模式中：可先停止計時或重置再練新題。', true, true); return; }
+  const sim = similarQuestion(state.reviewQueue.shift());
+  setProblem(sim.displayExpr + '（類題）'); elAnswer.value='';
+  setFeedback('<span class="kbd">提示：先 () → []，再 乘除，最後 加減（左→右）。</span>', true, true);
+  pushHistory(sim); updateStats(); elBtnNext.disabled=true;
+});
+$('#btnReset').addEventListener('click', ()=>{
   if(confirm('確定要重置統計與進度嗎？')){
-    stopTimer();
+    stopTimer(); state.locked=false; applyLockUI();
     Object.assign(state,{history:[],pointer:-1,score:0,streak:0,reviewQueue:[]});
     setProblem('已重置，請在左側選擇主題後按「下一題」開始'); setFeedback('',false,false); updateStats();
-    elBtnPrev.disabled=true; elBtnNext.disabled=true; elModeLabel.textContent='—';
-    document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
-    state.mode=null;
+    document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active')); state.mode=null; elModeLabel.textContent='—';
+    elBtnNext.disabled=true; $('#timerText').textContent='未開始';
   }
 });
 elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
@@ -497,6 +590,7 @@ elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
   keys.forEach(k=>{
     const b=document.createElement('button'); b.className='key'+(k==='送出'?' primary':''); b.textContent=k;
     b.addEventListener('click',()=>{
+      if(state.locked){ return; } // 鎖住時不允許輸入
       if(k==='送出') return submit();
       if(k==='清除'){ elAnswer.value=''; return; }
       if(k==='⌫'){ elAnswer.value = elAnswer.value.slice(0,-1); return; }
@@ -509,16 +603,11 @@ elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
 })();
 
 /* 輔助 */
-function resetSessionStats(){ Object.assign(state,{history:[],pointer:-1,score:0,streak:0,reviewQueue:[]}); updateStats(); }
-function setFeedback(msg,good,show){ // 已定義在上方，這裡為避免壓過
-  const el = document.getElementById('feedback');
-  if(show===false){ el.style.display='none'; return; }
-  el.innerHTML = msg; el.style.display='block';
-  if(!good){ el.classList.add('shake'); setTimeout(()=>el.classList.remove('shake'),300); }
-}
+function resetSessionStats(){ Object.assign(state,{history:[],pointer:-1,score:0,streak:0,reviewQueue:[]}); updateStats(); setFeedback('已重置統計，準備開始計時挑戰！', true, true); }
+function ensureMode(){ if(!state.mode){ state.mode='mixed'; elModeLabel.textContent=Modes.find(m=>m.id==='mixed').label; document.querySelectorAll('.mode-btn')[2]?.classList.add('active'); } }
 
-/* 初始化：建立模式按鈕後，引導 */
-setFeedback('請先選擇左側「練習主題」，然後按「下一題」開始。', true, true);
+/* 初始化 */
+setFeedback('請在上方迷你規則條複習後，於左側選主題並在作答區按「下一題」。', true, true);
 updateStats();
 </script>
 </body>
